@@ -35,9 +35,10 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(361, 63);
+            this.button1.Location = new System.Drawing.Point(406, 79);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(84, 29);
             this.button1.TabIndex = 0;
             this.button1.Text = "Search";
             this.button1.UseVisualStyleBackColor = true;
@@ -45,16 +46,18 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(304, 23);
+            this.textBox1.Location = new System.Drawing.Point(221, 29);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(209, 22);
+            this.textBox1.Size = new System.Drawing.Size(452, 26);
             this.textBox1.TabIndex = 1;
             // 
             // GuestSigUp
             // 
-            this.GuestSigUp.Location = new System.Drawing.Point(345, 166);
+            this.GuestSigUp.Location = new System.Drawing.Point(388, 208);
+            this.GuestSigUp.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.GuestSigUp.Name = "GuestSigUp";
-            this.GuestSigUp.Size = new System.Drawing.Size(113, 46);
+            this.GuestSigUp.Size = new System.Drawing.Size(127, 58);
             this.GuestSigUp.TabIndex = 2;
             this.GuestSigUp.Text = "New Guest";
             this.GuestSigUp.UseVisualStyleBackColor = true;
@@ -62,12 +65,13 @@
             // 
             // GuestSearh
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(897, 672);
             this.Controls.Add(this.GuestSigUp);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button1);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "GuestSearh";
             this.Text = "GuestSearh";
             this.ResumeLayout(false);

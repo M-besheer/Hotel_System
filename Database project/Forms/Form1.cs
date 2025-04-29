@@ -23,5 +23,10 @@ namespace Database_project
             GP.Show();               // show Form2
             this.Hide();
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
