@@ -12,27 +12,27 @@ namespace Database_project
 {
         
 
-        public class DBHandler
-        {
+    public class DBHandler
+    {
         private readonly string connectionString = @"Server=MOMOS-LIL-SHREK;Database=hotelres;Trusted_Connection=True;TrustServerCertificate=True;";
 
 
         public bool GuestExists(int guestId)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                string query = "SELECT COUNT(*) FROM Guest WHERE GuestID = @GuestID";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    string query = "SELECT COUNT(*) FROM Guest WHERE GuestID = @GuestID";
+                    cmd.Parameters.AddWithValue("@GuestID", guestId);
 
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@GuestID", guestId);
-
-                        conn.Open();
-                        int count = (int)cmd.ExecuteScalar();
-                        return count > 0;
-                    }
+                    conn.Open();
+                    int count = (int)cmd.ExecuteScalar();
+                    return count > 0;
                 }
             }
+        }
 
 
 
@@ -44,9 +44,9 @@ namespace Database_project
 
                 // Insert query
                 string query = @"
-            INSERT INTO Guest (First_Name, Last_Name, Email, Phone_Number, Street_Name, Flat_No, City, GFloor)
-            VALUES (@First_Name, @Last_Name, @Email, @Phone_Number, @Street_Name, @Flat_No, @City, @GFloor);
-            SELECT SCOPE_IDENTITY();";  // This will return the auto-incremented GuestID
+                INSERT INTO Guest (First_Name, Last_Name, Email, Phone_Number, Street_Name, Flat_No, City, GFloor)
+                VALUES (@First_Name, @Last_Name, @Email, @Phone_Number, @Street_Name, @Flat_No, @City, @GFloor);
+                SELECT SCOPE_IDENTITY();";  // This will return the auto-incremented GuestID
 
                 SqlCommand cmd = new SqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@First_Name", firstName);
