@@ -12,8 +12,8 @@ namespace Database_project
 {
         
 
-    public class DBHandler
-    {
+        public class DBHandler
+        {
         private readonly string connectionString = @"Server=MOMOS-LIL-SHREK;Database=hotelres;Trusted_Connection=True;TrustServerCertificate=True;";
 
 
