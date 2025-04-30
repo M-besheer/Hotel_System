@@ -23,13 +23,13 @@ namespace Database_project
                 {
                     string query = "SELECT COUNT(*) FROM Guest WHERE GuestID = @GuestID";
 
-                using (SqlCommand cmd = new SqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@GuestID", guestId);
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@GuestID", guestId);
 
-                        conn.Open();
-                        int count = (int)cmd.ExecuteScalar();
-                        return count > 0;
+                            conn.Open();
+                            int count = (int)cmd.ExecuteScalar();
+                            return count > 0;
                     }
                 }
         }
@@ -86,9 +86,9 @@ namespace Database_project
 
                     // Insert new guest
                     string insertQuery = @"
-        INSERT INTO Guest (First_Name, Last_Name, Email, Phone_Number, Street_Name, Flat_No, City, GFloor)
-        VALUES (@First_Name, @Last_Name, @Email, @Phone_Number, @Street_Name, @Flat_No, @City, @GFloor);
-        SELECT SCOPE_IDENTITY();";
+                    INSERT INTO Guest (First_Name, Last_Name, Email, Phone_Number, Street_Name, Flat_No, City, GFloor)
+                    VALUES (@First_Name, @Last_Name, @Email, @Phone_Number, @Street_Name, @Flat_No, @City, @GFloor);
+                    SELECT SCOPE_IDENTITY();";
 
                     SqlCommand insertCmd = new SqlCommand(insertQuery, connection);
                     insertCmd.Parameters.AddWithValue("@First_Name", firstName);
@@ -224,6 +224,85 @@ namespace Database_project
 
             }
         }
+        public int SearchManager(int Code)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = @"SELECT COUNT(*) FROM STAFF WHERE StaffRole LIKE '%manager%' AND StaffID = @Code;";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@Code", Code);
+                conn.Open();
+                int count = (int)cmd.ExecuteScalar();
+
+                if (count > 0) { return count; }
+                else { return 0; }
+
+            }
+        }
+        public DataTable Employeesdata(int ManagerID)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string q = @"SELECT StaffID,First_Name,Last_Name,StaffRole,BranchID,Job_Status FROM STAFF 
+                            WHERE not StaffID=@ManagerID;";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.Parameters.AddWithValue("@ManagerID", ManagerID);
+                DataTable table = new DataTable();
+
+                cmd.CommandType = CommandType.Text;
+                SqlDataReader reader = cmd.ExecuteReader();
+                table.Columns.Add("StaffID");
+                table.Columns.Add("First_Name");
+                table.Columns.Add("Last_Name");
+                table.Columns.Add("StaffRole");
+                table.Columns.Add("BranchID");
+                table.Columns.Add("Job_Status");
+                DataRow row;
+                while (reader.Read())
+                {
+                    row = table.NewRow();
+                    row["StaffID"] = reader["StaffID"];
+                    row["First_Name"] = reader["First_Name"];
+                    row["Last_Name"] = reader["Last_Name"];
+                    row["StaffRole"] = reader["StaffRole"];
+                    row["BranchID"] = reader["BranchID"];
+                    row["Job_Status"] = reader["Job_Status"];
+                    table.Rows.Add(row);
+                }
+                if (table.Rows.Count == 0)
+                {
+                    Console.WriteLine("a7a");
+                }
+                if (table.Rows.Count > 0)
+                {
+                    Console.WriteLine("not a7a");
+                }
+                // Print column headers
+                foreach (DataColumn column in table.Columns)
+                {
+                    Console.WriteLine($"{column.ColumnName}\t");
+                }
+                Console.WriteLine();
+
+                Console.WriteLine(new string('-', 50)); // Separator line
+
+                // Print rows
+                foreach (DataRow rows in table.Rows)
+                {
+                    foreach (var item in rows.ItemArray)
+                    {
+                        Console.WriteLine($"{item}\t");
+                    }
+                    Console.WriteLine();
+                }
+                reader.Close();
+                conn.Close();
+                return table;
+
+            }
+        }
+
 
 
     }
