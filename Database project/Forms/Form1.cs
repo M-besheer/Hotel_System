@@ -12,7 +12,6 @@ using System.Reflection;
 using System.Drawing.Drawing2D;
 using Database_project.Forms;
 
-
 namespace Database_project
 {
     public partial class Form1 : Form
@@ -134,7 +133,12 @@ namespace Database_project
             ml.Show();
             this.Hide();
         }
-       
-       
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            CheckReservation checkReservation = new CheckReservation();
+            checkReservation.Show();
+            this.Hide();
+        }
     }
 }
