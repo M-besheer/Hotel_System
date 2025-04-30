@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
 using System.Drawing.Drawing2D;
+using Database_project.Forms;
 
 
 namespace Database_project
@@ -31,23 +32,6 @@ namespace Database_project
             InitializeSlideshow();
 
         }
-        protected override void OnPaintBackground(PaintEventArgs e)
-        {
-            base.OnPaintBackground(e);
-
-            // Create a LinearGradientBrush for the gradient effect
-            using (LinearGradientBrush lgb = new LinearGradientBrush(
-                new Point(20, 20),           // Starting point of the gradient
-                new Point(20, 70),           // Ending point of the gradient
-                Color.Red,                   // Start color
-                Color.White))                // End color
-            {
-                // Fill the form's client area with the gradient
-                e.Graphics.FillRectangle(lgb, this.ClientRectangle);
-            }
-        }
-
-
         private void CenterLabel(Label label)
         {
             Hotel.Left = (this.ClientSize.Width - Hotel.Width) / 2;
@@ -144,14 +128,13 @@ namespace Database_project
             this.Hide();
         }
 
-        protected override void OnFormClosing(FormClosingEventArgs e)
+        private void StaffRedirect(object sender, EventArgs e)
         {
-            // Clean up resources
-            slideshowTimer.Stop();
-            SlideShow.Image?.Dispose();
-            base.OnFormClosing(e);
+            ManagerLogin ml = new ManagerLogin(this);
+            ml.Show();
+            this.Hide();
         }
-        
+       
        
     }
 }

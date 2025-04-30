@@ -15,7 +15,7 @@ namespace Database_project
 
     public class DBHandler
     {
-        private readonly string connectionString = @"Data Source=.;Initial Catalog=HotelDatabase;Integrated Security=True;TrustServerCertificate=True;";
+        private readonly string connectionString = @"Data Source=.;Initial Catalog=HotelDB;Integrated Security=True;Trust Server Certificate=True";
 
         public bool GuestExists(int guestId)
         {
@@ -64,47 +64,113 @@ namespace Database_project
             }
         }
 
-        public int InsertGuest(int guestId, string firstName, string lastName, string email, string phoneNumber, string streetName, string flatNo, string city, string gFloor)
+        public int InsertGuest(string firstName, string lastName, string email, string phoneNumber, string streetName, string flatNo, string city, string gFloor)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
 
-                // Check if guest with given ID exists
-                string checkQuery = "SELECT COUNT(*) FROM Guest WHERE GuestID = @GuestID";
-                SqlCommand checkCmd = new SqlCommand(checkQuery, connection);
-                checkCmd.Parameters.AddWithValue("@GuestID", guestId);
+                // Insert query
+                string query = @"
+        INSERT INTO Guest (First_Name, Last_Name, Email, Phone_Number, Street_Name, Flat_No, City, GFloor)
+        VALUES (@First_Name, @Last_Name, @Email, @Phone_Number, @Street_Name, @Flat_No, @City, @GFloor);
+        SELECT SCOPE_IDENTITY();";  // This will return the auto-incremented GuestID
 
-                int count = (int)checkCmd.ExecuteScalar();
-                if (count > 0)
-                {
-                    // Guest already exists
-                    return 0;
-                }
+                SqlCommand cmd = new SqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@First_Name", firstName);
+                cmd.Parameters.AddWithValue("@Last_Name", lastName);
+                cmd.Parameters.AddWithValue("@Email", email);
+                cmd.Parameters.AddWithValue("@Phone_Number", phoneNumber);
+                cmd.Parameters.AddWithValue("@Street_Name", streetName);
+                cmd.Parameters.AddWithValue("@Flat_No", flatNo);
+                cmd.Parameters.AddWithValue("@City", city);
+                cmd.Parameters.AddWithValue("@GFloor", gFloor);
 
-                // Insert new guest
-                string insertQuery = @"
-                INSERT INTO Guest (First_Name, Last_Name, Email, Phone_Number, Street_Name, Flat_No, City, GFloor)
-                VALUES (@First_Name, @Last_Name, @Email, @Phone_Number, @Street_Name, @Flat_No, @City, @GFloor);
-                SELECT SCOPE_IDENTITY();";
-
-                SqlCommand insertCmd = new SqlCommand(insertQuery, connection);
-                insertCmd.Parameters.AddWithValue("@First_Name", firstName);
-                insertCmd.Parameters.AddWithValue("@Last_Name", lastName);
-                insertCmd.Parameters.AddWithValue("@Email", email);
-                insertCmd.Parameters.AddWithValue("@Phone_Number", phoneNumber);
-                insertCmd.Parameters.AddWithValue("@Street_Name", streetName);
-                insertCmd.Parameters.AddWithValue("@Flat_No", flatNo);
-                insertCmd.Parameters.AddWithValue("@City", city);
-                insertCmd.Parameters.AddWithValue("@GFloor", gFloor);
-
-                int newGuestId = Convert.ToInt32(insertCmd.ExecuteScalar());
-                return newGuestId;
+                // Execute the query and retrieve the GuestID
+                int guestId = Convert.ToInt32(cmd.ExecuteScalar());  // This will give the last inserted GuestID
+                return guestId;
             }
         }
 
+        public int SearchManager(int Code)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = @"SELECT COUNT(*) FROM STAFF WHERE StaffRole LIKE '%manager%' AND StaffID = @Code;";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@Code", Code);
+                    conn.Open();
+                    int count = (int)cmd.ExecuteScalar();
+               
+                if (count > 0) { return count; }
+                else { return 0; }
+                    
+            }
+        }
 
+        public DataTable Employeesdata(int ManagerID)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string q = @"SELECT StaffID,First_Name,Last_Name,StaffRole,BranchID,Job_Status FROM STAFF 
+                            WHERE not StaffID=@ManagerID;";
+                SqlCommand cmd = new SqlCommand(q, conn);
+                cmd.Parameters.AddWithValue("@ManagerID", ManagerID);
+                DataTable table = new DataTable();
 
+                cmd.CommandType = CommandType.Text;
+                SqlDataReader reader = cmd.ExecuteReader();
+                table.Columns.Add("StaffID");
+                table.Columns.Add("First_Name");
+                table.Columns.Add("Last_Name");
+                table.Columns.Add("StaffRole");
+                table.Columns.Add("BranchID");
+                table.Columns.Add("Job_Status");
+                DataRow row;
+                while (reader.Read())
+                {
+                    row = table.NewRow();
+                    row["StaffID"] = reader["StaffID"];
+                    row["First_Name"] = reader["First_Name"];
+                    row["Last_Name"] = reader["Last_Name"];
+                    row["StaffRole"] = reader["StaffRole"];
+                    row["BranchID"] = reader["BranchID"];
+                    row["Job_Status"] = reader["Job_Status"];
+                    table.Rows.Add(row);
+                }
+                if (table.Rows.Count == 0)
+                {
+                    Console.WriteLine("a7a");
+                }
+                if(table.Rows.Count > 0)
+                {
+                    Console.WriteLine("not a7a");
+                }
+                // Print column headers
+                foreach (DataColumn column in table.Columns)
+                {
+                    Console.WriteLine($"{column.ColumnName}\t");
+                }
+                Console.WriteLine();
+
+                Console.WriteLine(new string('-', 50)); // Separator line
+
+                // Print rows
+                foreach (DataRow rows in table.Rows)
+                {
+                    foreach (var item in rows.ItemArray)
+                    {
+                        Console.WriteLine($"{item}\t");
+                    }
+                    Console.WriteLine();
+                }
+                reader.Close();
+                conn.Close();
+                return table;
+
+            }
+        }
 
 
     }
