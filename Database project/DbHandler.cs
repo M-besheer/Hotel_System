@@ -15,7 +15,7 @@ namespace Database_project
 
     public class DBHandler
     {
-        private readonly string connectionString = @"Data Source=.;Initial Catalog=HotelDatabase;Integrated Security=True;TrustServerCertificate=True;";
+        private readonly string connectionString = @"Data Source=.;Initial Catalog=HotelDB;Integrated Security=True;TrustServerCertificate=True;";
 
         public bool GuestExists(int guestId)
         {
@@ -64,47 +64,152 @@ namespace Database_project
             }
         }
 
-        public int InsertGuest(int guestId, string firstName, string lastName, string email, string phoneNumber, string streetName, string flatNo, string city, string gFloor)
+        public int InsertGuest(string firstName, string lastName, string email, string phoneNumber, string streetName, string flatNo, string city, string gFloor)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
 
-                // Check if guest with given ID exists
-                string checkQuery = "SELECT COUNT(*) FROM Guest WHERE GuestID = @GuestID";
-                SqlCommand checkCmd = new SqlCommand(checkQuery, connection);
-                checkCmd.Parameters.AddWithValue("@GuestID", guestId);
-
-                int count = (int)checkCmd.ExecuteScalar();
-                if (count > 0)
-                {
-                    // Guest already exists
-                    return 0;
-                }
-
-                // Insert new guest
-                string insertQuery = @"
+                // Insert query
+                string query = @"
                 INSERT INTO Guest (First_Name, Last_Name, Email, Phone_Number, Street_Name, Flat_No, City, GFloor)
                 VALUES (@First_Name, @Last_Name, @Email, @Phone_Number, @Street_Name, @Flat_No, @City, @GFloor);
-                SELECT SCOPE_IDENTITY();";
+                SELECT SCOPE_IDENTITY();";  // This will return the auto-incremented GuestID
 
-                SqlCommand insertCmd = new SqlCommand(insertQuery, connection);
-                insertCmd.Parameters.AddWithValue("@First_Name", firstName);
-                insertCmd.Parameters.AddWithValue("@Last_Name", lastName);
-                insertCmd.Parameters.AddWithValue("@Email", email);
-                insertCmd.Parameters.AddWithValue("@Phone_Number", phoneNumber);
-                insertCmd.Parameters.AddWithValue("@Street_Name", streetName);
-                insertCmd.Parameters.AddWithValue("@Flat_No", flatNo);
-                insertCmd.Parameters.AddWithValue("@City", city);
-                insertCmd.Parameters.AddWithValue("@GFloor", gFloor);
+                SqlCommand cmd = new SqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@First_Name", firstName);
+                cmd.Parameters.AddWithValue("@Last_Name", lastName);
+                cmd.Parameters.AddWithValue("@Email", email);
+                cmd.Parameters.AddWithValue("@Phone_Number", phoneNumber);
+                cmd.Parameters.AddWithValue("@Street_Name", streetName);
+                cmd.Parameters.AddWithValue("@Flat_No", flatNo);
+                cmd.Parameters.AddWithValue("@City", city);
+                cmd.Parameters.AddWithValue("@GFloor", gFloor);
 
-                int newGuestId = Convert.ToInt32(insertCmd.ExecuteScalar());
-                return newGuestId;
+                // Execute the query and retrieve the GuestID
+                int guestId = Convert.ToInt32(cmd.ExecuteScalar());  // This will give the last inserted GuestID
+                return guestId;
+            }
+        }
+
+        public DataTable getReservationsByGuestID(int GuestID)
+        {
+
+            if (!GuestExists(GuestID))
+            {
+                Console.WriteLine("no client");
+            }
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = @"
+                SELECT 
+                    r.ReservationID,
+                    g.First_Name + ' ' + g.Last_Name AS GuestName,
+                    r.Check_In AS CheckIN,
+                    r.Check_Out AS CheckOUT,
+                    rr.Room_NumberRR AS Room
+                FROM 
+                    Reservation r
+                JOIN 
+                    Guest g ON r.GuestID = g.GuestID
+                JOIN 
+                    Room_Reserve rr ON r.ReservationID = rr.ReservationIDRR
+                where g.GuestID = @GuestID
+                ORDER BY 
+                    r.Check_In DESC;";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@GuestID", GuestID);
+                DataTable table = new DataTable();
+
+                cmd.CommandType = CommandType.Text;
+                SqlDataReader reader = cmd.ExecuteReader();
+                table.Columns.Add("ReservationID");
+                table.Columns.Add("GuestName");
+                table.Columns.Add("CheckIN");
+                table.Columns.Add("CheckOUT");
+                table.Columns.Add("Room");
+                DataRow row;
+                while (reader.Read())
+                {
+                    row = table.NewRow();
+                    row["ReservationID"] = reader["ReservationID"];
+                    row["GuestName"] = reader["GuestName"];
+                    row["CheckIN"] = reader["CheckIN"];
+                    row["CheckOUT"] = reader["CheckOUT"];
+                    row["Room"] = reader["Room"];
+                    table.Rows.Add(row);
+                }
+                if (table.Rows.Count==0)
+                {
+                    Console.WriteLine("a7a");
+                }
+                reader.Close();
+                conn.Close();
+                return table;
+
             }
         }
 
 
+        public DataTable getReservationsByRoomNumber(int roomNumber)
+        {
 
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = @"
+                SELECT 
+                    r.ReservationID,
+                    g.First_Name + ' ' + g.Last_Name AS GuestName,
+                    r.Check_In AS CheckIN,
+                    r.Check_Out AS CheckOUT,
+                    rr.Room_NumberRR AS Room
+                FROM 
+                    Reservation r
+                JOIN 
+                    Guest g ON r.GuestID = g.GuestID
+                JOIN 
+                    Room_Reserve rr ON r.ReservationID = rr.ReservationIDRR
+                where rr.Room_NumberRR = @roomNumber
+                ORDER BY 
+                    r.Check_In DESC;";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@roomNumber", roomNumber);
+                DataTable table = new DataTable();
+
+                cmd.CommandType = CommandType.Text;
+                SqlDataReader reader = cmd.ExecuteReader();
+                table.Columns.Add("ReservationID");
+                table.Columns.Add("GuestName");
+                table.Columns.Add("CheckIN");
+                table.Columns.Add("CheckOUT");
+                table.Columns.Add("Room");
+                DataRow row;
+                while (reader.Read())
+                {
+                    row = table.NewRow();
+                    row["ReservationID"] = reader["ReservationID"];
+                    row["GuestName"] = reader["GuestName"];
+                    row["CheckIN"] = reader["CheckIN"];
+                    row["CheckOUT"] = reader["CheckOUT"];
+                    row["Room"] = reader["Room"];
+                    table.Rows.Add(row);
+                }
+                if (table.Rows.Count == 0)
+                {
+                    Console.WriteLine("a7a");
+                }
+                reader.Close();
+                conn.Close();
+                return table;
+
+            }
+        }
 
 
     }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
 using System.Drawing.Drawing2D;
-
+using Database_project.Forms;
 
 namespace Database_project
 {
@@ -151,7 +151,12 @@ namespace Database_project
             SlideShow.Image?.Dispose();
             base.OnFormClosing(e);
         }
-        
-       
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            CheckReservation checkReservation = new CheckReservation();
+            checkReservation.Show();
+            this.Hide();
+        }
     }
 }
