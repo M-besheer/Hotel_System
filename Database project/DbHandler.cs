@@ -81,25 +81,28 @@ namespace Database_project
                     // Guest already exists
                     return 0;
                 }
+                else
+                {
 
-                // Insert new guest
-                string insertQuery = @"
+                    // Insert new guest
+                    string insertQuery = @"
                 INSERT INTO Guest (First_Name, Last_Name, Email, Phone_Number, Street_Name, Flat_No, City, GFloor)
                 VALUES (@First_Name, @Last_Name, @Email, @Phone_Number, @Street_Name, @Flat_No, @City, @GFloor);
                 SELECT SCOPE_IDENTITY();";
 
-                SqlCommand insertCmd = new SqlCommand(insertQuery, connection);
-                insertCmd.Parameters.AddWithValue("@First_Name", firstName);
-                insertCmd.Parameters.AddWithValue("@Last_Name", lastName);
-                insertCmd.Parameters.AddWithValue("@Email", email);
-                insertCmd.Parameters.AddWithValue("@Phone_Number", phoneNumber);
-                insertCmd.Parameters.AddWithValue("@Street_Name", streetName);
-                insertCmd.Parameters.AddWithValue("@Flat_No", flatNo);
-                insertCmd.Parameters.AddWithValue("@City", city);
-                insertCmd.Parameters.AddWithValue("@GFloor", gFloor);
+                    SqlCommand insertCmd = new SqlCommand(insertQuery, connection);
+                    insertCmd.Parameters.AddWithValue("@First_Name", firstName);
+                    insertCmd.Parameters.AddWithValue("@Last_Name", lastName);
+                    insertCmd.Parameters.AddWithValue("@Email", email);
+                    insertCmd.Parameters.AddWithValue("@Phone_Number", phoneNumber);
+                    insertCmd.Parameters.AddWithValue("@Street_Name", streetName);
+                    insertCmd.Parameters.AddWithValue("@Flat_No", flatNo);
+                    insertCmd.Parameters.AddWithValue("@City", city);
+                    insertCmd.Parameters.AddWithValue("@GFloor", gFloor);
 
-                int newGuestId = Convert.ToInt32(insertCmd.ExecuteScalar());
-                return newGuestId;
+                    int newGuestId = Convert.ToInt32(insertCmd.ExecuteScalar());
+                    return newGuestId;
+                }
             }
         }
 
