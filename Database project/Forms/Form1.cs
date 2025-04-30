@@ -142,6 +142,9 @@ namespace Database_project
             GuestSearh GP = new GuestSearh();  // create an instance of Form2
             GP.Show();               // show Form2
             this.Hide();
+/*            RoomSelect RS = new RoomSelect(); //Just for testing
+            RS.Show();
+            this.Hide();*/
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)

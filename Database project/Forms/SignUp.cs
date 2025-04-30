@@ -68,7 +68,7 @@ namespace Database_project
                 MessageBox.Show($"Guest created successfully! Guest ID: {insertedGuestId}");
 
                 // Send the guest data to the Reserve form
-                Reserve reserveForm = new Reserve(insertedGuestId);
+                RoomSelect reserveForm = new RoomSelect(insertedGuestId);
                 reserveForm.Show();  // This will show the Reserve form
                 this.Hide();         // This hides the current form (Guest creation form)
             }

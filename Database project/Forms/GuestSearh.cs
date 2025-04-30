@@ -62,7 +62,7 @@ namespace Database_project
                     MessageBox.Show("Guest exists!");
 
                     // Navigate to Reserve form
-                    Reserve reserveForm = new Reserve(guestId); // If Reserve takes guestId
+                    RoomSelect reserveForm = new RoomSelect(guestId); // If Reserve takes guestId
                     reserveForm.Show();
                     this.Hide(); // Optional: hide current form
                 }
