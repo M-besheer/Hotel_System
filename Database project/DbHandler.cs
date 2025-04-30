@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,9 +23,9 @@ namespace Database_project
                 {
                     string query = "SELECT COUNT(*) FROM Guest WHERE GuestID = @GuestID";
 
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@GuestID", guestId);
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@GuestID", guestId);
 
                         conn.Open();
                         int count = (int)cmd.ExecuteScalar();
@@ -33,7 +34,35 @@ namespace Database_project
                 }
         }
 
+        public DataTable SearchGuests(string partialId)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                // Define the query
+                string query = @"SELECT GuestID, First_Name, Last_Name 
+                         FROM Guest
+                         WHERE GuestID LIKE @partialId + '%'";
 
+                // Create the command and add the parameter
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@partialId", partialId);
+
+                // Open the connection
+                conn.Open();
+
+                // Execute the query and read the data
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    // Create a DataTable to hold the results
+                    DataTable dt = new DataTable();
+
+                    // Load the DataTable with the data from the SqlDataReader
+                    dt.Load(reader);
+
+                    return dt;
+                }
+            }
+        }
 
         public int InsertGuest(int guestId, string firstName, string lastName, string email, string phoneNumber, string streetName, string flatNo, string city, string gFloor)
         {
