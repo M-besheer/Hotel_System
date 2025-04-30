@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{94367EAA-906A-4EE3-82F4-B3A5E341B6A7}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>Database_project</RootNamespace>
     <AssemblyName>Database project</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
@@ -174,11 +174,29 @@
     <Compile Include="Forms\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\CheckReservation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CheckReservation.Designer.cs">
+      <DependentUpon>CheckReservation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\GuestSearh.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\GuestSearh.Designer.cs">
       <DependentUpon>GuestSearh.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ManagerLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ManagerLogin.Designer.cs">
+      <DependentUpon>ManagerLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\StaffData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\StaffData.Designer.cs">
+      <DependentUpon>StaffData.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -194,11 +212,20 @@
     <Compile Include="Forms\SignUp.Designer.cs">
       <DependentUpon>SignUp.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Forms\CheckReservation.resx">
+      <DependentUpon>CheckReservation.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\GuestSearh.resx">
       <DependentUpon>GuestSearh.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ManagerLogin.resx">
+      <DependentUpon>ManagerLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\StaffData.resx">
+      <DependentUpon>StaffData.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
