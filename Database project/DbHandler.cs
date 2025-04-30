@@ -86,11 +86,12 @@ namespace Database_project
 
                     // Insert new guest
                     string insertQuery = @"
-                    INSERT INTO Guest (First_Name, Last_Name, Email, Phone_Number, Street_Name, Flat_No, City, GFloor)
-                    VALUES (@First_Name, @Last_Name, @Email, @Phone_Number, @Street_Name, @Flat_No, @City, @GFloor);
+                    INSERT INTO Guest (GuestID, First_Name, Last_Name, Email, Phone_Number, Street_Name, Flat_No, City, GFloor)
+                    VALUES (@GuestID, @First_Name, @Last_Name, @Email, @Phone_Number, @Street_Name, @Flat_No, @City, @GFloor);
                     SELECT SCOPE_IDENTITY();";
 
                     SqlCommand insertCmd = new SqlCommand(insertQuery, connection);
+                    insertCmd.Parameters.AddWithValue("@GuestID", guestId);
                     insertCmd.Parameters.AddWithValue("@First_Name", firstName);
                     insertCmd.Parameters.AddWithValue("@Last_Name", lastName);
                     insertCmd.Parameters.AddWithValue("@Email", email);
@@ -100,8 +101,8 @@ namespace Database_project
                     insertCmd.Parameters.AddWithValue("@City", city);
                     insertCmd.Parameters.AddWithValue("@GFloor", gFloor);
 
-                    int newGuestId = Convert.ToInt32(insertCmd.ExecuteScalar());
-                    return newGuestId;
+                    //int newGuestId = Convert.ToInt32(insertCmd.ExecuteScalar());
+                    return 1;
                 }
             }
         }
@@ -300,6 +301,36 @@ namespace Database_project
                 conn.Close();
                 return table;
 
+            }
+        }
+
+
+
+        public DataTable ShowAvailableRooms(string startDate, string endDate, string branchID)
+        {
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string checkQuery = "SELECT r.Room_Number, r.Branch_ID, r.Price_Per_Night, r.RoomView, r.Room_Type, r.Resident_No FROM Room AS r LEFT JOIN Room_Reserve AS rr ON rr.Room_NumberRR = r.Room_Number AND rr.BranchIDRR = r.Branch_ID LEFT JOIN Reservation AS res ON res.ReservationID = rr.ReservationIDRR AND @CheckInDate < res.Check_Out AND @CheckOutDate > res.Check_In WHERE res.ReservationID IS NULL"; //AND r.Branch_ID = @branchID";
+
+
+                SqlCommand checkCmd = new SqlCommand(checkQuery, connection);
+                checkCmd.Parameters.AddWithValue("@CheckInDate", startDate);
+                checkCmd.Parameters.AddWithValue("@CheckOutDate", endDate);
+                //checkCmd.Parameters.AddWithValue("@branchID", branchID);
+
+                using (SqlDataReader reader = checkCmd.ExecuteReader())
+                {
+                    // Create a DataTable to hold the results
+                    DataTable dt = new DataTable();
+
+                    // Load the DataTable with the data from the SqlDataReader
+                    dt.Load(reader);
+
+                    return dt;
+                }
             }
         }
 

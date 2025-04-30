@@ -38,7 +38,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Check = new System.Windows.Forms.DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -124,8 +123,6 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Check});
             this.dataGridView1.Location = new System.Drawing.Point(12, 302);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
@@ -133,15 +130,6 @@
             this.dataGridView1.Size = new System.Drawing.Size(859, 236);
             this.dataGridView1.TabIndex = 8;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            // 
-            // Check
-            // 
-            this.Check.HeaderText = "Check";
-            this.Check.MinimumWidth = 6;
-            this.Check.Name = "Check";
-            this.Check.Text = "Check";
-            this.Check.ToolTipText = "Check";
-            this.Check.Width = 125;
             // 
             // CheckReservation
             // 
@@ -177,6 +165,5 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.DataGridView dataGridView1;
         public System.Windows.Forms.TextBox roomNumber;
-        private System.Windows.Forms.DataGridViewButtonColumn Check;
     }
 }

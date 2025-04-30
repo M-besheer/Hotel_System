@@ -125,6 +125,10 @@ namespace Database_project
             GuestSearh GP = new GuestSearh();  // create an instance of Form2
             GP.Show();               // show Form2
             this.Hide();
+
+/*            RoomSelect rs =new RoomSelect();
+            rs.Show();
+            this.Hide();*/
         }
 
         private void StaffRedirect(object sender, EventArgs e)
