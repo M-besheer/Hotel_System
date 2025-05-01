@@ -25,7 +25,7 @@ namespace Database_project.Forms
             int guestID;
             int RoomNumber;
             Console.WriteLine(GuestID.Text);
-            if (int.TryParse(GuestID.Text,out guestID))
+            if (int.TryParse(GuestID.Text, out guestID))
             {
                 DBHandler db = new DBHandler();
                 dataGridView1.DataSource = db.getReservationsByGuestID(guestID);
@@ -39,11 +39,10 @@ namespace Database_project.Forms
                 {
                     MessageBox.Show("No reservations found for this Guest ID");
                 }
-                Console.WriteLine("da5alt 1");
 
 
             }
-            else if (int.TryParse(roomNumber.Text,out RoomNumber))
+            else if (int.TryParse(roomNumber.Text, out RoomNumber))
             {
                 DBHandler db = new DBHandler();
                 dataGridView1.DataSource = db.getReservationsByRoomNumber(RoomNumber);
@@ -57,17 +56,29 @@ namespace Database_project.Forms
                 {
                     MessageBox.Show("No reservations found for this Guest ID");
                 }
-                Console.WriteLine("da5alt 2");
             }
             else
             {
                 MessageBox.Show("Please enter a valid Guest ID or Room number");
             }
+
+
+
+
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void button2_Click(object sender, EventArgs e)
         {
+            ViewReservation vs = new ViewReservation(1);
+            vs.Show();
+            this.Hide();
+        }
 
+        private void Back_Click(object sender, EventArgs e)
+        {
+            Form1 form = new Form1();
+            form.Show();
+            this.Hide();
         }
         private void back_btnClick(object sender, EventArgs e)
         {

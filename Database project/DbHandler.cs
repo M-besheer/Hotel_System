@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -8,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Data.SqlClient;
+using Microsoft.Identity.Client;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
 
 
@@ -129,7 +132,7 @@ namespace Database_project
                     Reservation r
                 JOIN 
                     Guest g ON r.GuestID = g.GuestID
-                JOIN 
+                left JOIN 
                     Room_Reserve rr ON r.ReservationID = rr.ReservationIDRR
                 where g.GuestID = @GuestID
                 ORDER BY 
@@ -423,13 +426,6 @@ namespace Database_project
 
         public DataTable ShowAvailableRooms(string startDate, string endDate, string branchID)
         {
-            int? branchFilter = null;
-            if (!string.IsNullOrWhiteSpace(branchID)
-                && int.TryParse(branchID, out var bid))
-            {
-                branchFilter = bid;
-            }
-
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -440,20 +436,16 @@ namespace Database_project
                     "LEFT JOIN Room_Reserve AS rr ON rr.Room_NumberRR = r.Room_Number " +
                     "AND rr.BranchIDRR = r.Branch_ID " +
                     "LEFT JOIN Reservation AS res ON res.ReservationID = rr.ReservationIDRR " +
-                    "AND @CheckInDate < res.Check_Out AND @CheckOutDate > res.Check_In " +
+                    "AND @CheckInDate <= res.Check_Out AND @CheckOutDate >= res.Check_In " +
                     "WHERE res.ReservationID IS NULL " +
-                    "AND (r.Branch_ID = @branchID " +
-                    "OR @branchID IS NULL)";
+                    "AND r.Branch_ID = @branchID";
 
 
 
                 SqlCommand checkCmd = new SqlCommand(checkQuery, connection);
                 checkCmd.Parameters.AddWithValue("@CheckInDate", startDate); 
                 checkCmd.Parameters.AddWithValue("@CheckOutDate", endDate);
-                var p = checkCmd.Parameters.Add("@branchID", SqlDbType.Int);
-                p.Value = branchFilter.HasValue
-                          ? (object)branchFilter.Value
-                          : DBNull.Value;
+                checkCmd.Parameters.AddWithValue("@branchID", branchID);
 
                 using (SqlDataReader reader = checkCmd.ExecuteReader())
                 {
@@ -520,6 +512,133 @@ namespace Database_project
         }
 
 
+
+        public void getReservationInfo(int ReservationID, ViewReservation rs)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = @"
+                    			select 
+	                        r.reservationid,
+	                        r.guestid,
+	                        r.meals,
+	                        r.price,
+	                        g.first_name+' '+g.last_name as GuestName,
+	                        g.phone_number,
+	                        g.Email,
+	                        b.branchid,
+	                        b.location as BranchName,
+	                        FORMAT(r.Check_In, 'yyyy-MM-dd') as Check_In,
+                            FORMAT(r.Check_Out, 'yyyy-MM-dd') as Check_Out,
+                            FORMAT(r.BookingDate, 'yyyy-MM-dd') as BookingDate
+	                        from Reservation r
+	                        join Guest g on g.guestid = r.guestid
+	                        left join Room_Reserve rr on rr.reservationidrr = r.reservationid
+	                        left join branch b on rr.branchidrr = b.branchid
+	                        where r.reservationid=@ReservationID";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@ReservationID", ReservationID);
+                cmd.CommandType = CommandType.Text;
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+
+
+                    string BookingDate = reader["BookingDate"].ToString();
+                    string GuestID = reader["GuestID"].ToString();
+                    string GuestName = reader["GuestName"].ToString();
+                    string PhoneNumber = reader["Phone_Number"].ToString();
+                    string GuestEmail = reader["Email"].ToString();
+                    string CheckIN = reader["Check_In"].ToString();
+                    string CheckOUT = reader["Check_Out"].ToString();
+                    string Price = reader["Price"].ToString();
+                    string Meal = reader["Meals"].ToString();
+                    string BranchName = reader["BranchName"].ToString();
+                    string Branchid = reader["branchid"].ToString();
+
+
+                    rs.PopulateFields(ReservationID, BookingDate, GuestID, GuestName, PhoneNumber, GuestEmail, CheckIN, CheckOUT, Price, Meal, BranchName, Branchid);
+                }
+
+            }
+
+        }
+
+        public DataTable getReservedRooms(int ReservationID)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = @"
+                    select room_Numberrr as Rooms from room_reserve where reservationidrr=@ReservationID
+                    		";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@ReservationID", ReservationID.ToString());
+                DataTable table = new DataTable();
+                cmd.CommandType = CommandType.Text;
+                SqlDataReader reader = cmd.ExecuteReader();
+                table.Columns.Add("Rooms");
+                DataRow row;
+                while (reader.Read())
+                {
+                    row = table.NewRow();
+                    row["Rooms"] = reader["Rooms"];
+                    table.Rows.Add(row);
+                }
+
+                return table;
+            }
+
+        }
+
+        public bool isPaid(int reservationID)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = @"
+                    		select count(transactionid) as numberOfTransactions from payment 
+	                        where reservationidp=@ReservationID";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@ReservationID", reservationID);
+
+                    conn.Open();
+                    int count = (int)cmd.ExecuteScalar();
+                    return count > 0;
+                }
+            }
+
+        }
+
+        public void updateReservation(string reservationid, string CheckIn, string CheckOut, string meal)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = @"
+                                UPDATE reservation
+                                SET Check_in = @CheckIn,
+                                    check_out = @CheckOut,
+	                                Meals = @meal
+                                WHERE reservationid=@reservationid;
+                            ";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@CheckIn", CheckIn);
+                    cmd.Parameters.AddWithValue("@CheckOut", CheckOut);
+                    cmd.Parameters.AddWithValue("@meal", meal);
+                    cmd.Parameters.AddWithValue("@ReservationID", reservationid);
+                    conn.Open();
+                    MessageBox.Show("Reservation is updated successfully");
+                }
+            }
+        }
+
+
         public void MakeReservation(
         int guestId,
         DateTime checkIn,
@@ -549,6 +668,32 @@ namespace Database_project
                     cmd.ExecuteNonQuery();
                 }
             }
+
+        public void deleteReservation(int ReservationID)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = @"
+                    		DELETE FROM Room_Reserve WHERE ReservationIDRR = @ReservationID;
+                            DELETE FROM Reservation WHERE reservationid = @ReservationID;
+                            ";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@ReservationID", ReservationID.ToString());
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Reservation is deleted successfully");
+                }
+
+            }
+        }
+
+
+
+
+    }
+}
 
 
         }
