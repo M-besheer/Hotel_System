@@ -54,7 +54,7 @@
             this.confirm.TabIndex = 1;
             this.confirm.Text = "CONFIRM RESERVATION";
             this.confirm.UseVisualStyleBackColor = true;
-            this.confirm.Click += new System.EventHandler(this.button1_Click);
+            this.confirm.Click += new System.EventHandler(this.confirm_Click);
             // 
             // dataGridView2
             // 
@@ -72,7 +72,6 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(175, 24);
             this.comboBox1.TabIndex = 3;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // Reserve
             // 

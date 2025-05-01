@@ -58,8 +58,14 @@ namespace Database_project
                     selectedRooms.Add(row.Cells["Room_Number"].Value.ToString());
                 }
             }
+            if (!int.TryParse(BranchNumber.Text.Trim(), out int branchID))
+            {
+                MessageBox.Show("Invalid branch ID. Please enter a valid number.");
+                return;
+            }
 
-            Reserve reserveForm = new Reserve(guestID, selectedRooms, startDate, endDate);
+
+            Reserve reserveForm = new Reserve(branchID,guestID, selectedRooms, startDate, endDate);
             reserveForm.Show();
             this.Hide();
         }
