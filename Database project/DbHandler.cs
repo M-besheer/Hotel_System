@@ -443,7 +443,7 @@ namespace Database_project
 
 
                 SqlCommand checkCmd = new SqlCommand(checkQuery, connection);
-                checkCmd.Parameters.AddWithValue("@CheckInDate", startDate); 
+                checkCmd.Parameters.AddWithValue("@CheckInDate", startDate);
                 checkCmd.Parameters.AddWithValue("@CheckOutDate", endDate);
                 checkCmd.Parameters.AddWithValue("@branchID", branchID);
 
@@ -668,7 +668,7 @@ namespace Database_project
                     cmd.ExecuteNonQuery();
                 }
             }
-
+        }
         public void deleteReservation(int ReservationID)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -694,11 +694,4 @@ namespace Database_project
 
     }
 }
-
-
-        }
-    }
-}
-
-
 

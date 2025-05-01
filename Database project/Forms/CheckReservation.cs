@@ -12,11 +12,9 @@ namespace Database_project.Forms
 {
     public partial class CheckReservation : Form
     {
-        private Form1 originalForm;
-        public CheckReservation(Form1 form1)
+        public CheckReservation()
         {
             InitializeComponent();
-            originalForm = form1;
         }
 
 
@@ -80,10 +78,6 @@ namespace Database_project.Forms
             form.Show();
             this.Hide();
         }
-        private void back_btnClick(object sender, EventArgs e)
-        {
-            originalForm.Show();
-            this.Close();
-        }
+
     }
 }

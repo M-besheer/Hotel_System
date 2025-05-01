@@ -140,7 +140,7 @@ namespace Database_project
 
         private void button1_Click(object sender, EventArgs e)
         {
-            CheckReservation checkReservation = new CheckReservation(this);
+            CheckReservation checkReservation = new CheckReservation();
             checkReservation.Show();
             this.Hide();
         }

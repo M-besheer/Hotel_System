@@ -161,13 +161,7 @@
             // 
             // back_btn
             // 
-            this.back_btn.Location = new System.Drawing.Point(795, 13);
-            this.back_btn.Name = "back_btn";
-            this.back_btn.Size = new System.Drawing.Size(75, 23);
-            this.back_btn.TabIndex = 9;
-            this.back_btn.Text = "<-Back";
-            this.back_btn.UseVisualStyleBackColor = true;
-            this.back_btn.Click += new System.EventHandler(this.back_btnClick);
+
             // 
             // CheckReservation
             // 
