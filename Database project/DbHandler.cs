@@ -18,7 +18,7 @@ namespace Database_project
 
     public class DBHandler
     {
-        private readonly string connectionString = @"Data Source=.;Initial Catalog=HotelDB;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
+        private readonly string connectionString = @"Data Source=.;Initial Catalog=HotelDatabase;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
 
         public bool GuestExists(int guestId)
         {

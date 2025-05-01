@@ -41,10 +41,9 @@
             this.SearchBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SearchBtn.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SearchBtn.ForeColor = System.Drawing.SystemColors.Control;
-            this.SearchBtn.Location = new System.Drawing.Point(650, 47);
-            this.SearchBtn.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.SearchBtn.Location = new System.Drawing.Point(578, 38);
             this.SearchBtn.Name = "SearchBtn";
-            this.SearchBtn.Size = new System.Drawing.Size(204, 48);
+            this.SearchBtn.Size = new System.Drawing.Size(181, 38);
             this.SearchBtn.TabIndex = 0;
             this.SearchBtn.Text = "Search";
             this.SearchBtn.UseVisualStyleBackColor = false;
@@ -58,10 +57,9 @@
             this.GuestSigUp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.GuestSigUp.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.GuestSigUp.ForeColor = System.Drawing.SystemColors.Control;
-            this.GuestSigUp.Location = new System.Drawing.Point(650, 119);
-            this.GuestSigUp.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.GuestSigUp.Location = new System.Drawing.Point(578, 95);
             this.GuestSigUp.Name = "GuestSigUp";
-            this.GuestSigUp.Size = new System.Drawing.Size(210, 58);
+            this.GuestSigUp.Size = new System.Drawing.Size(187, 46);
             this.GuestSigUp.TabIndex = 2;
             this.GuestSigUp.Text = "New Guest";
             this.GuestSigUp.UseVisualStyleBackColor = false;
@@ -72,24 +70,24 @@
             this.SearchBox.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SearchBox.FormattingEnabled = true;
             this.SearchBox.IntegralHeight = false;
-            this.SearchBox.ItemHeight = 28;
-            this.SearchBox.Location = new System.Drawing.Point(69, 54);
+            this.SearchBox.ItemHeight = 23;
+            this.SearchBox.Location = new System.Drawing.Point(61, 43);
+            this.SearchBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.SearchBox.MaxDropDownItems = 100;
             this.SearchBox.Name = "SearchBox";
-            this.SearchBox.Size = new System.Drawing.Size(562, 36);
+            this.SearchBox.Size = new System.Drawing.Size(500, 31);
             this.SearchBox.Sorted = true;
             this.SearchBox.TabIndex = 3;
             // 
             // GuestSearh
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.ForestGreen;
-            this.ClientSize = new System.Drawing.Size(908, 561);
+            this.ClientSize = new System.Drawing.Size(807, 449);
             this.Controls.Add(this.SearchBox);
             this.Controls.Add(this.GuestSigUp);
             this.Controls.Add(this.SearchBtn);
-            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "GuestSearh";
             this.Text = "GuestSearh";
             this.ResumeLayout(false);

@@ -17,54 +17,72 @@ namespace Database_project
         public GuestSearh()
         {
             InitializeComponent();
+
             SearchBox.DropDownStyle = ComboBoxStyle.DropDown;
-            SearchBox.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            SearchBox.AutoCompleteSource = AutoCompleteSource.ListItems;
-            SearchBox.DisplayMember = "Display"; // Custom display text
-            SearchBox.ValueMember = "GuestID";   // Actual value to use
-            SearchBox.TextChanged += SearchComboBox_TextChanged;
+            SearchBox.AutoCompleteMode = AutoCompleteMode.None;
+            SearchBox.AutoCompleteSource = AutoCompleteSource.None;
+
+            // wire up text-update to refill the DataSource
+            SearchBox.TextUpdate += SearchComboBox_TextChanged;
         }
 
         // Handle text changes
         private void SearchComboBox_TextChanged(object sender, EventArgs e)
         {
-            if (SearchBox.Text.Length >= 1) // Start searching after 1 character
+            string txt = SearchBox.Text;
+            if (string.IsNullOrEmpty(txt))
             {
-                DataTable results = db.SearchGuests(SearchBox.Text);
-
-                // Create a list with combined display text
-                var displayItems = new List<dynamic>();
-                foreach (DataRow row in results.Rows)
-                {
-                    displayItems.Add(new
-                    {
-                       
-                        Display = $"{row["GuestID"]} - {row["First_Name"]} {row["Last_Name"]}"
-                    });
-                }
-
-                SearchBox.DataSource = displayItems;
-                SearchBox.DroppedDown = true; // Show dropdown automatically
-                if (SearchBox.Text.IsNullOrEmpty()) {
-                    SearchBox.DroppedDown= false;
-
-                }
+                SearchBox.DroppedDown = false;
+                SearchBox.DataSource = null;
+                return;
             }
+
+            DataTable results;
+            try { results = db.SearchGuests(txt); }
+            catch
+            {
+                SearchBox.DroppedDown = false;
+                SearchBox.DataSource = null;
+                return;
+            }
+            if (results.Rows.Count == 0)
+            {
+                SearchBox.DroppedDown = false;
+                SearchBox.DataSource = null;
+                return;
+            }
+
+            // Build a list of objects with GuestID and Display text:
+            var list = results.Rows
+                              .Cast<DataRow>()
+                              .Select(r => new {
+                                  GuestID = Convert.ToInt32(r["GuestID"]),
+                                  Display = $"{r["GuestID"]} - {r["First_Name"]} {r["Last_Name"]}"
+                              })
+                              .ToList();
+
+            SearchBox.DataSource = list;
+            SearchBox.DisplayMember = "Display";
+            SearchBox.ValueMember = "GuestID";
+            SearchBox.DroppedDown = true;
+            // put the user’s raw typing back and reset caret:
+            SearchBox.Text = txt;
+            SearchBox.SelectionStart = txt.Length;
+            SearchBox.SelectionLength = 0;
         }
         private void SearchBtnClick(object sender, EventArgs e)
         {
-            int guestId;
-            if (int.TryParse(SearchBox.Text, out guestId))
+            // Now SelectedValue *is* the GuestID (or null if nothing selected)
+            if (SearchBox.SelectedValue is int guestId)
             {
-                DBHandler db = new DBHandler();
                 if (db.GuestExists(guestId))
                 {
                     MessageBox.Show("Guest exists!");
 
-                    // Navigate to Reserve form
-                    RoomSelect reserveForm = new RoomSelect(guestId); // If Reserve takes guestId
+                    // pass guestId along to your reservation form
+                    var reserveForm = new RoomSelect(guestId);
                     reserveForm.Show();
-                    this.Hide(); // Optional: hide current form
+                    this.Hide();
                 }
                 else
                 {
@@ -73,7 +91,7 @@ namespace Database_project
             }
             else
             {
-                MessageBox.Show("Please enter a valid Guest ID.");
+                MessageBox.Show("Please select a guest from the list.");
             }
         }
 
