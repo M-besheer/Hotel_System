@@ -34,8 +34,11 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup />
   <PropertyGroup>
-    <StartupObject />
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Azure.Core, Version=1.38.0.0, Culture=neutral, PublicKeyToken=92742159e12e44c8, processorArchitecture=MSIL">
@@ -195,6 +198,12 @@
     <Compile Include="Forms\ManagerLogin.Designer.cs">
       <DependentUpon>ManagerLogin.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Reserve.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Reserve.Designer.cs">
+      <DependentUpon>Reserve.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\StaffData.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -203,11 +212,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Forms\Reserve.cs">
+    <Compile Include="Forms\RoomSelect.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Reserve.Designer.cs">
-      <DependentUpon>Reserve.cs</DependentUpon>
+    <Compile Include="Forms\RoomSelect.Designer.cs">
+      <DependentUpon>RoomSelect.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\SignUp.cs">
       <SubType>Form</SubType>
@@ -230,6 +239,9 @@
     <EmbeddedResource Include="Forms\ManagerLogin.resx">
       <DependentUpon>ManagerLogin.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Reserve.resx">
+      <DependentUpon>Reserve.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\StaffData.resx">
       <DependentUpon>StaffData.cs</DependentUpon>
     </EmbeddedResource>
@@ -243,8 +255,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Forms\Reserve.resx">
-      <DependentUpon>Reserve.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\RoomSelect.resx">
+      <DependentUpon>RoomSelect.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SignUp.resx">
       <DependentUpon>SignUp.cs</DependentUpon>

@@ -44,18 +44,18 @@ namespace Database_project
             }
 
             // Validate email format using a simple regex pattern
-            if (!System.Text.RegularExpressions.Regex.IsMatch(email, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"))
+            /*if (!System.Text.RegularExpressions.Regex.IsMatch(email, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"))
             {
                 MessageBox.Show("Invalid email format. Please enter a valid email.");
                 return;
-            }
+            }*/
 
             // Validate phone number format (for example, checking if it has 10 digits)
-            if (phoneNumber.Length != 10 || !phoneNumber.All(char.IsDigit))
+            /*if (phoneNumber.Length != 10 || !phoneNumber.All(char.IsDigit))
             {
                 MessageBox.Show("Invalid phone number. Please enter a 10-digit phone number.");
                 return;
-            }
+            }*/
 
             // Create an instance of DBHandler and insert the new guest
             DBHandler db = new DBHandler();
@@ -63,13 +63,13 @@ namespace Database_project
             // The InsertGuest method should return the GuestID of the inserted guest
             int insertedGuestId = db.InsertGuest(guestId, firstName, lastName, email, phoneNumber, streetName, flatNo, city, gFloor);
 
-            if (insertedGuestId > 0)
+            if (insertedGuestId != 0)
             {
-                MessageBox.Show($"Guest created successfully! Guest ID: {insertedGuestId}");
+                MessageBox.Show($"Guest created successfully!");
 
                 // Send the guest data to the Reserve form
-                Reserve reserveForm = new Reserve(insertedGuestId);
-                reserveForm.Show();  // This will show the Reserve form
+                RoomSelect rs = new RoomSelect(insertedGuestId);
+                rs.Show();  // This will show the Reserve form
                 this.Hide();         // This hides the current form (Guest creation form)
             }
             else

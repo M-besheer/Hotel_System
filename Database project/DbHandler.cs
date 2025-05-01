@@ -18,7 +18,7 @@ namespace Database_project
 
     public class DBHandler
     {
-        private readonly string connectionString = @"Data Source=.;Initial Catalog=HotelDB;Integrated Security=True;Trust Server Certificate=True";
+        private readonly string connectionString = @"Data Source=.;Initial Catalog=HotelD;Integrated Security=True;Trust Server Certificate=True";
 
         public bool GuestExists(int guestId)
         {
@@ -89,11 +89,12 @@ namespace Database_project
 
                     // Insert new guest
                     string insertQuery = @"
-                    INSERT INTO Guest (First_Name, Last_Name, Email, Phone_Number, Street_Name, Flat_No, City, GFloor)
-                    VALUES (@First_Name, @Last_Name, @Email, @Phone_Number, @Street_Name, @Flat_No, @City, @GFloor);
+                    INSERT INTO Guest (GuestID, First_Name, Last_Name, Email, Phone_Number, Street_Name, Flat_No, City, GFloor)
+                    VALUES (@GuestID, @First_Name, @Last_Name, @Email, @Phone_Number, @Street_Name, @Flat_No, @City, @GFloor);
                     SELECT SCOPE_IDENTITY();";
 
                     SqlCommand insertCmd = new SqlCommand(insertQuery, connection);
+                    insertCmd.Parameters.AddWithValue("@GuestID", guestId);
                     insertCmd.Parameters.AddWithValue("@First_Name", firstName);
                     insertCmd.Parameters.AddWithValue("@Last_Name", lastName);
                     insertCmd.Parameters.AddWithValue("@Email", email);
@@ -103,8 +104,8 @@ namespace Database_project
                     insertCmd.Parameters.AddWithValue("@City", city);
                     insertCmd.Parameters.AddWithValue("@GFloor", gFloor);
 
-                    int newGuestId = Convert.ToInt32(insertCmd.ExecuteScalar());
-                    return newGuestId;
+                    //int newGuestId = Convert.ToInt32(insertCmd.ExecuteScalar());
+                    return guestId;
                 }
             }
         }
@@ -418,14 +419,95 @@ namespace Database_project
                         MessageBox.Show("No rows were updated. Please check the employee ID.", "Update Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
 
+
+
+        public DataTable ShowAvailableRooms(string startDate, string endDate, string branchID)
+        {
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string checkQuery = "SELECT r.Room_Number, r.Branch_ID, r.Price_Per_Night, r.RoomView, r.Room_Type, r.Resident_No FROM Room AS r LEFT JOIN Room_Reserve AS rr ON rr.Room_NumberRR = r.Room_Number AND rr.BranchIDRR = r.Branch_ID LEFT JOIN Reservation AS res ON res.ReservationID = rr.ReservationIDRR AND @CheckInDate < res.Check_Out AND @CheckOutDate > res.Check_In WHERE res.ReservationID IS NULL"; //AND r.Branch_ID = @branchID";
+
+
                 }
                 con.Close();
             }
+                SqlCommand checkCmd = new SqlCommand(checkQuery, connection);
+                checkCmd.Parameters.AddWithValue("@CheckInDate", startDate);
+                checkCmd.Parameters.AddWithValue("@CheckOutDate", endDate);
+                //checkCmd.Parameters.AddWithValue("@branchID", branchID);
+
+                using (SqlDataReader reader = checkCmd.ExecuteReader())
+                {
+                    // Create a DataTable to hold the results
+                    DataTable dt = new DataTable();
+
+                    // Load the DataTable with the data from the SqlDataReader
+                    dt.Load(reader);
+
+                    return dt;
+                }
+            }
+        }
+
+
+        public DataTable GetRoomDetails(string roomNumber)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "SELECT Room_Number AS [Room ID], Room_Type, RoomView, Price_Per_Night FROM Room WHERE Room_Number = @RoomNumber";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@RoomNumber", roomNumber);
+
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                DataTable roomDetails = new DataTable();
+                adapter.Fill(roomDetails);
+
+                return roomDetails;
+            }
+        }
+
+        public DataTable GetPricesPerDay(string roomNumber, string startDate, string endDate)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                // First get price per night
+                string priceQuery = "SELECT Price_Per_Night FROM Room WHERE Room_Number = @RoomNumber";
+                SqlCommand priceCmd = new SqlCommand(priceQuery, conn);
+                priceCmd.Parameters.AddWithValue("@RoomNumber", roomNumber);
+
+                conn.Open();
+                object priceObj = priceCmd.ExecuteScalar();
+                conn.Close();
+
+                if (priceObj == null) return null;
+
+                decimal price = Convert.ToDecimal(priceObj);
+
+                // Now generate dates and prices
+                DateTime start = DateTime.ParseExact(startDate, "yyyy-MM-dd", null);
+                DateTime end = DateTime.ParseExact(endDate, "yyyy-MM-dd", null);
+
+                DataTable table = new DataTable();
+                table.Columns.Add("Date");
+                table.Columns.Add("Price");
+
+                for (DateTime date = start; date <= end; date = date.AddDays(1))
+                {
+                    table.Rows.Add(date.ToString("yyyy-MM-dd"), price);
+                }
+
+                return table;
+            }
+        }
+
 
         }
     }
 }
 
-    
-    
+
+
 
