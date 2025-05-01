@@ -63,12 +63,12 @@ namespace Database_project
             // The InsertGuest method should return the GuestID of the inserted guest
             int insertedGuestId = db.InsertGuest(guestId, firstName, lastName, email, phoneNumber, streetName, flatNo, city, gFloor);
 
-            if (insertedGuestId == 1)
+            if (insertedGuestId != 0)
             {
                 MessageBox.Show($"Guest created successfully!");
 
                 // Send the guest data to the Reserve form
-                RoomSelect rs = new RoomSelect();
+                RoomSelect rs = new RoomSelect(insertedGuestId);
                 rs.Show();  // This will show the Reserve form
                 this.Hide();         // This hides the current form (Guest creation form)
             }

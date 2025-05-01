@@ -192,6 +192,12 @@
     <Compile Include="Forms\ManagerLogin.Designer.cs">
       <DependentUpon>ManagerLogin.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Reserve.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Reserve.Designer.cs">
+      <DependentUpon>Reserve.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\StaffData.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -223,6 +229,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ManagerLogin.resx">
       <DependentUpon>ManagerLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Reserve.resx">
+      <DependentUpon>Reserve.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\StaffData.resx">
       <DependentUpon>StaffData.cs</DependentUpon>

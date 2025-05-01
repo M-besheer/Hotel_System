@@ -15,7 +15,7 @@ namespace Database_project
 
     public class DBHandler
     {
-        private readonly string connectionString = @"Data Source=.;Initial Catalog=HotelDB;Integrated Security=True;Trust Server Certificate=True";
+        private readonly string connectionString = @"Data Source=.;Initial Catalog=HotelD;Integrated Security=True;Trust Server Certificate=True";
 
         public bool GuestExists(int guestId)
         {
@@ -102,7 +102,7 @@ namespace Database_project
                     insertCmd.Parameters.AddWithValue("@GFloor", gFloor);
 
                     //int newGuestId = Convert.ToInt32(insertCmd.ExecuteScalar());
-                    return 1;
+                    return guestId;
                 }
             }
         }
@@ -334,6 +334,56 @@ namespace Database_project
             }
         }
 
+
+        public DataTable GetRoomDetails(string roomNumber)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "SELECT Room_Number AS [Room ID], Room_Type, RoomView, Price_Per_Night FROM Room WHERE Room_Number = @RoomNumber";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@RoomNumber", roomNumber);
+
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                DataTable roomDetails = new DataTable();
+                adapter.Fill(roomDetails);
+
+                return roomDetails;
+            }
+        }
+
+        public DataTable GetPricesPerDay(string roomNumber, string startDate, string endDate)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                // First get price per night
+                string priceQuery = "SELECT Price_Per_Night FROM Room WHERE Room_Number = @RoomNumber";
+                SqlCommand priceCmd = new SqlCommand(priceQuery, conn);
+                priceCmd.Parameters.AddWithValue("@RoomNumber", roomNumber);
+
+                conn.Open();
+                object priceObj = priceCmd.ExecuteScalar();
+                conn.Close();
+
+                if (priceObj == null) return null;
+
+                decimal price = Convert.ToDecimal(priceObj);
+
+                // Now generate dates and prices
+                DateTime start = DateTime.ParseExact(startDate, "yyyy-MM-dd", null);
+                DateTime end = DateTime.ParseExact(endDate, "yyyy-MM-dd", null);
+
+                DataTable table = new DataTable();
+                table.Columns.Add("Date");
+                table.Columns.Add("Price");
+
+                for (DateTime date = start; date <= end; date = date.AddDays(1))
+                {
+                    table.Rows.Add(date.ToString("yyyy-MM-dd"), price);
+                }
+
+                return table;
+            }
+        }
 
 
     }
