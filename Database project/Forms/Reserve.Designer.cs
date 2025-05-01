@@ -32,6 +32,7 @@
             this.confirm = new System.Windows.Forms.Button();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.meals = new System.Windows.Forms.CheckBox();
+            this.back_btn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
@@ -75,11 +76,22 @@
             this.meals.Text = "meals";
             this.meals.UseVisualStyleBackColor = true;
             // 
+            // back_btn
+            // 
+            this.back_btn.Location = new System.Drawing.Point(13, 13);
+            this.back_btn.Name = "back_btn";
+            this.back_btn.Size = new System.Drawing.Size(75, 23);
+            this.back_btn.TabIndex = 5;
+            this.back_btn.Text = "<-Back";
+            this.back_btn.UseVisualStyleBackColor = true;
+            this.back_btn.Click += new System.EventHandler(this.back_btnClick);
+            // 
             // Reserve
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1263, 450);
+            this.Controls.Add(this.back_btn);
             this.Controls.Add(this.meals);
             this.Controls.Add(this.dataGridView2);
             this.Controls.Add(this.confirm);
@@ -99,5 +111,6 @@
         private System.Windows.Forms.Button confirm;
         private System.Windows.Forms.DataGridView dataGridView2;
         private System.Windows.Forms.CheckBox meals;
+        private System.Windows.Forms.Button back_btn;
     }
 }

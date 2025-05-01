@@ -13,9 +13,11 @@ namespace Database_project
 {
     public partial class GuestSearh : Form
     {
+        private Form1 originalForm;
         DBHandler db = new DBHandler();
-        public GuestSearh()
+        public GuestSearh(Form1 form1)
         {
+            originalForm = form1;
             InitializeComponent();
 
             SearchBox.DropDownStyle = ComboBoxStyle.DropDown;
@@ -80,7 +82,7 @@ namespace Database_project
                     MessageBox.Show("Guest exists!");
 
                     // pass guestId along to your reservation form
-                    var reserveForm = new RoomSelect(guestId);
+                    var reserveForm = new RoomSelect(this, guestId);
                     reserveForm.Show();
                     this.Hide();
                 }
@@ -97,9 +99,15 @@ namespace Database_project
 
         private void GuestSigUp_Click(object sender, EventArgs e)
         {
-            SignUp signUpForm = new SignUp();
+            SignUp signUpForm = new SignUp(this);
             signUpForm.Show();
             this.Hide(); // Optional: hides the current form
+        }
+
+        private void back_btnClick(object sender, EventArgs e)
+        {
+            originalForm.Show();
+            this.Close();
         }
 
     }

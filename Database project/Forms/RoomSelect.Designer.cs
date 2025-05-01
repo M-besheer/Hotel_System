@@ -39,6 +39,7 @@
             this.Pay = new System.Windows.Forms.Button();
             this.CheckOut = new System.Windows.Forms.DateTimePicker();
             this.Checkin = new System.Windows.Forms.DateTimePicker();
+            this.back_btn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridRooms)).BeginInit();
             this.SuspendLayout();
             // 
@@ -132,11 +133,22 @@
             this.Checkin.TabIndex = 13;
             this.Checkin.Value = new System.DateTime(2025, 5, 2, 3, 39, 0, 0);
             // 
+            // back_btn
+            // 
+            this.back_btn.Location = new System.Drawing.Point(1157, 12);
+            this.back_btn.Name = "back_btn";
+            this.back_btn.Size = new System.Drawing.Size(75, 23);
+            this.back_btn.TabIndex = 14;
+            this.back_btn.Text = "<- Back";
+            this.back_btn.UseVisualStyleBackColor = true;
+            this.back_btn.Click += new System.EventHandler(this.back_btnClick);
+            // 
             // RoomSelect
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1244, 450);
+            this.Controls.Add(this.back_btn);
             this.Controls.Add(this.Checkin);
             this.Controls.Add(this.CheckOut);
             this.Controls.Add(this.Pay);
@@ -147,7 +159,7 @@
             this.Controls.Add(this.dataGridRooms);
             this.Controls.Add(this.View_Available_Rooms);
             this.Name = "RoomSelect";
-            this.Text = "Reserve";
+            this.Text = "RoomSelect";
             this.Load += new System.EventHandler(this.RoomSelect_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridRooms)).EndInit();
             this.ResumeLayout(false);
@@ -167,5 +179,6 @@
         private System.Windows.Forms.Button Pay;
         private System.Windows.Forms.DateTimePicker CheckOut;
         private System.Windows.Forms.DateTimePicker Checkin;
+        private System.Windows.Forms.Button back_btn;
     }
 }

@@ -9,10 +9,12 @@ namespace Database_project
     public partial class RoomSelect : Form
     {
         private int CguestID;
+        private GuestSearh guestSearch;
 
-        public RoomSelect(int guestID)
+        public RoomSelect(GuestSearh guest_Search,int guestID)
         {
             InitializeComponent();
+            guestSearch = guest_Search;
             CguestID = guestID;
         }
 
@@ -59,9 +61,14 @@ namespace Database_project
                 }
             }
 
-            Reserve reserveForm = new Reserve(guestID, selectedRooms, startDate, endDate);
+            Reserve reserveForm = new Reserve(this, guestID, selectedRooms, startDate, endDate);
             reserveForm.Show();
             this.Hide();
+        }
+        private void back_btnClick(object sender, EventArgs e)
+        {
+            guestSearch.Show();
+            this.Close();
         }
     }
 }

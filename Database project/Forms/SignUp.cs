@@ -6,9 +6,11 @@ namespace Database_project
 {
     public partial class SignUp : Form
     {
-        public SignUp()
+        private GuestSearh guestSearch;
+        public SignUp(GuestSearh guest_Search)
         {
             InitializeComponent();
+            guestSearch = guest_Search;
         }
 
         private void CreateGuest_Click(object sender, EventArgs e)
@@ -68,7 +70,7 @@ namespace Database_project
                 MessageBox.Show($"Guest created successfully!");
 
                 // Send the guest data to the Reserve form
-                RoomSelect rs = new RoomSelect(insertedGuestId);
+                RoomSelect rs = new RoomSelect(guestSearch, insertedGuestId);
                 rs.Show();  // This will show the Reserve form
                 this.Hide();         // This hides the current form (Guest creation form)
             }
@@ -76,6 +78,11 @@ namespace Database_project
             {
                 MessageBox.Show("Failed to create guest. Please try again.");
             }
+        }
+        private void back_btnClick(object sender, EventArgs e)
+        {
+            guestSearch.Show();
+            this.Close();
         }
     }
 }

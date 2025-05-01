@@ -12,9 +12,11 @@ namespace Database_project.Forms
 {
     public partial class CheckReservation : Form
     {
-        public CheckReservation()
+        private Form1 originalForm;
+        public CheckReservation(Form1 form1)
         {
             InitializeComponent();
+            originalForm = form1;
         }
 
 
@@ -66,6 +68,11 @@ namespace Database_project.Forms
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+        private void back_btnClick(object sender, EventArgs e)
+        {
+            originalForm.Show();
+            this.Close();
         }
     }
 }

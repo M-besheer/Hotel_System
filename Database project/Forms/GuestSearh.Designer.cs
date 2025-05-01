@@ -31,6 +31,7 @@
             this.SearchBtn = new System.Windows.Forms.Button();
             this.GuestSigUp = new System.Windows.Forms.Button();
             this.SearchBox = new System.Windows.Forms.ComboBox();
+            this.back_btn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // SearchBtn
@@ -79,12 +80,24 @@
             this.SearchBox.Sorted = true;
             this.SearchBox.TabIndex = 3;
             // 
+            // back_btn
+            // 
+            this.back_btn.Location = new System.Drawing.Point(12, 12);
+            this.back_btn.Name = "back_btn";
+            this.back_btn.Size = new System.Drawing.Size(75, 23);
+            this.back_btn.TabIndex = 4;
+            this.back_btn.Text = "<- Back";
+            this.back_btn.UseVisualStyleBackColor = true;
+            this.back_btn.Click += new System.EventHandler(this.back_btnClick);
+
+            // 
             // GuestSearh
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.ForestGreen;
             this.ClientSize = new System.Drawing.Size(807, 449);
+            this.Controls.Add(this.back_btn);
             this.Controls.Add(this.SearchBox);
             this.Controls.Add(this.GuestSigUp);
             this.Controls.Add(this.SearchBtn);
@@ -99,5 +112,6 @@
         private System.Windows.Forms.Button SearchBtn;
         private System.Windows.Forms.Button GuestSigUp;
         private System.Windows.Forms.ComboBox SearchBox;
+        private System.Windows.Forms.Button back_btn;
     }
 }

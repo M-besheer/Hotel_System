@@ -9,15 +9,18 @@ namespace Database_project.Forms
 {
     public partial class Reserve : Form
     {
+        private RoomSelect roomSelect;
+
         private int _guestID;
         private List<string> _roomIDs;
         private string _startDate;
         private string _endDate;
 
-        public Reserve(int guestID, List<string> selectedRooms, string startDate, string endDate)
+        public Reserve(RoomSelect room_Select,int guestID, List<string> selectedRooms, string startDate, string endDate)
         {
             InitializeComponent();
 
+            roomSelect = room_Select;
             _guestID = guestID;
             _roomIDs = selectedRooms;
             _startDate = startDate;
@@ -96,6 +99,11 @@ namespace Database_project.Forms
             Form1 done = new Form1(); // Navigate back to Form1 after confirmation
             done.Show();
             this.Close();  // Close the current Reserve form
+        }
+        private void back_btnClick(object sender, EventArgs e)
+        {
+            roomSelect.Show();
+            this.Close();
         }
     }
 }

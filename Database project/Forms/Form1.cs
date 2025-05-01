@@ -122,7 +122,7 @@ namespace Database_project
 
         private void Reserve_Click(object sender, EventArgs e)
         {
-            GuestSearh GP = new GuestSearh();  // create an instance of Form2
+            GuestSearh GP = new GuestSearh(this);  // create an instance of Form2
             GP.Show();               // show Form2
             this.Hide();
 
@@ -140,7 +140,7 @@ namespace Database_project
 
         private void button1_Click(object sender, EventArgs e)
         {
-            CheckReservation checkReservation = new CheckReservation();
+            CheckReservation checkReservation = new CheckReservation(this);
             checkReservation.Show();
             this.Hide();
         }

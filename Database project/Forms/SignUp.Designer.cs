@@ -49,6 +49,7 @@
             this.label9 = new System.Windows.Forms.Label();
             this.cnic = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
+            this.back_btn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // FirstName
@@ -242,12 +243,23 @@
             this.label11.TabIndex = 21;
             this.label11.Text = "CNIC";
             // 
+            // back_btn
+            // 
+            this.back_btn.Location = new System.Drawing.Point(994, 12);
+            this.back_btn.Name = "back_btn";
+            this.back_btn.Size = new System.Drawing.Size(75, 23);
+            this.back_btn.TabIndex = 22;
+            this.back_btn.Text = "<-Back";
+            this.back_btn.UseVisualStyleBackColor = true;
+            this.back_btn.Click += new System.EventHandler(this.back_btnClick);
+            // 
             // SignUp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LimeGreen;
             this.ClientSize = new System.Drawing.Size(1081, 616);
+            this.Controls.Add(this.back_btn);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.cnic);
             this.Controls.Add(this.label9);
@@ -299,5 +311,6 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox cnic;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Button back_btn;
     }
 }
