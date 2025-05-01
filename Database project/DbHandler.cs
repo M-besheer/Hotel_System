@@ -67,13 +67,13 @@ namespace Database_project
             }
         }
 
+
         public int InsertGuest(int guestId, string firstName, string lastName, string email, string phoneNumber, string streetName, string flatNo, string city, string gFloor)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
 
-                // Check if guest with given ID exists
                 string checkQuery = "SELECT COUNT(*) FROM Guest WHERE GuestID = @GuestID";
                 SqlCommand checkCmd = new SqlCommand(checkQuery, connection);
                 checkCmd.Parameters.AddWithValue("@GuestID", guestId);
@@ -81,17 +81,13 @@ namespace Database_project
                 int count = (int)checkCmd.ExecuteScalar();
                 if (count > 0)
                 {
-                    // Guest already exists
                     return 0;
                 }
                 else
                 {
-
-                    // Insert new guest
                     string insertQuery = @"
-                    INSERT INTO Guest (GuestID, First_Name, Last_Name, Email, Phone_Number, Street_Name, Flat_No, City, GFloor)
-                    VALUES (@GuestID, @First_Name, @Last_Name, @Email, @Phone_Number, @Street_Name, @Flat_No, @City, @GFloor);
-                    SELECT SCOPE_IDENTITY();";
+                INSERT INTO Guest (GuestID, First_Name, Last_Name, Email, Phone_Number, Street_Name, Flat_No, City, GFloor)
+                VALUES (@GuestID, @First_Name, @Last_Name, @Email, @Phone_Number, @Street_Name, @Flat_No, @City, @GFloor);";
 
                     SqlCommand insertCmd = new SqlCommand(insertQuery, connection);
                     insertCmd.Parameters.AddWithValue("@GuestID", guestId);
@@ -104,7 +100,8 @@ namespace Database_project
                     insertCmd.Parameters.AddWithValue("@City", city);
                     insertCmd.Parameters.AddWithValue("@GFloor", gFloor);
 
-                    //int newGuestId = Convert.ToInt32(insertCmd.ExecuteScalar());
+                    insertCmd.ExecuteNonQuery();  // THIS LINE IS NECESSARY
+
                     return guestId;
                 }
             }
