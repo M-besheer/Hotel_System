@@ -18,7 +18,7 @@ namespace Database_project
 
     public class DBHandler
     {
-        private readonly string connectionString = @"Data Source=.;Initial Catalog=HotelD;Integrated Security=True;Trust Server Certificate=True";
+        private readonly string connectionString = @"Data Source=.;Initial Catalog=HotelDB;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
 
         public bool GuestExists(int guestId)
         {
@@ -419,37 +419,38 @@ namespace Database_project
                         MessageBox.Show("No rows were updated. Please check the employee ID.", "Update Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
 
-
+                }
+                con.Close();
+            }
+        }
 
         public DataTable ShowAvailableRooms(string startDate, string endDate, string branchID)
         {
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-                string checkQuery = "SELECT r.Room_Number, r.Branch_ID, r.Price_Per_Night, r.RoomView, r.Room_Type, r.Resident_No FROM Room AS r LEFT JOIN Room_Reserve AS rr ON rr.Room_NumberRR = r.Room_Number AND rr.BranchIDRR = r.Branch_ID LEFT JOIN Reservation AS res ON res.ReservationID = rr.ReservationIDRR AND @CheckInDate < res.Check_Out AND @CheckOutDate > res.Check_In WHERE res.ReservationID IS NULL"; //AND r.Branch_ID = @branchID";
-
-
-                }
-                con.Close();
-            }
-                SqlCommand checkCmd = new SqlCommand(checkQuery, connection);
-                checkCmd.Parameters.AddWithValue("@CheckInDate", startDate);
-                checkCmd.Parameters.AddWithValue("@CheckOutDate", endDate);
-                //checkCmd.Parameters.AddWithValue("@branchID", branchID);
-
-                using (SqlDataReader reader = checkCmd.ExecuteReader())
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    // Create a DataTable to hold the results
-                    DataTable dt = new DataTable();
+                    connection.Open();
 
-                    // Load the DataTable with the data from the SqlDataReader
-                    dt.Load(reader);
+                    string checkQuery = "SELECT r.Room_Number, r.Branch_ID, r.Price_Per_Night, r.RoomView, r.Room_Type, r.Resident_No FROM Room AS r LEFT JOIN Room_Reserve AS rr ON rr.Room_NumberRR = r.Room_Number AND rr.BranchIDRR = r.Branch_ID LEFT JOIN Reservation AS res ON res.ReservationID = rr.ReservationIDRR AND @CheckInDate < res.Check_Out AND @CheckOutDate > res.Check_In WHERE res.ReservationID IS NULL"; //AND r.Branch_ID = @branchID";
 
-                    return dt;
+
+               
+                    SqlCommand checkCmd = new SqlCommand(checkQuery, connection);
+                    checkCmd.Parameters.AddWithValue("@CheckInDate", startDate);
+                    checkCmd.Parameters.AddWithValue("@CheckOutDate", endDate);
+                    //checkCmd.Parameters.AddWithValue("@branchID", branchID);
+
+                    using (SqlDataReader reader = checkCmd.ExecuteReader())
+                    {
+                        // Create a DataTable to hold the results
+                        DataTable dt = new DataTable();
+
+                        // Load the DataTable with the data from the SqlDataReader
+                        dt.Load(reader);
+
+                        return dt;
+                    }
                 }
-            }
         }
 
 
@@ -504,7 +505,6 @@ namespace Database_project
         }
 
 
-        }
     }
 }
 
