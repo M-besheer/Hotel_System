@@ -33,6 +33,7 @@
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.meals = new System.Windows.Forms.CheckBox();
             this.back_btn = new System.Windows.Forms.Button();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
@@ -55,7 +56,7 @@
             this.confirm.TabIndex = 1;
             this.confirm.Text = "CONFIRM RESERVATION";
             this.confirm.UseVisualStyleBackColor = true;
-            this.confirm.Click += new System.EventHandler(this.button1_Click);
+            this.confirm.Click += new System.EventHandler(this.confirm_Click);
             // 
             // dataGridView2
             // 
@@ -66,15 +67,13 @@
             this.dataGridView2.Size = new System.Drawing.Size(539, 113);
             this.dataGridView2.TabIndex = 2;
             // 
-            // meals
+            // comboBox1
             // 
-            this.meals.AutoSize = true;
-            this.meals.Location = new System.Drawing.Point(583, 315);
-            this.meals.Name = "meals";
-            this.meals.Size = new System.Drawing.Size(66, 20);
-            this.meals.TabIndex = 4;
-            this.meals.Text = "meals";
-            this.meals.UseVisualStyleBackColor = true;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(975, 207);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(175, 24);
+            this.comboBox1.TabIndex = 3;
             // 
             // back_btn
             // 
@@ -93,6 +92,7 @@
             this.ClientSize = new System.Drawing.Size(1263, 450);
             this.Controls.Add(this.back_btn);
             this.Controls.Add(this.meals);
+            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.dataGridView2);
             this.Controls.Add(this.confirm);
             this.Controls.Add(this.dataGridView1);
@@ -101,7 +101,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -112,5 +111,6 @@
         private System.Windows.Forms.DataGridView dataGridView2;
         private System.Windows.Forms.CheckBox meals;
         private System.Windows.Forms.Button back_btn;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
