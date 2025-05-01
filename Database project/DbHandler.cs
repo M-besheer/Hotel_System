@@ -423,13 +423,6 @@ namespace Database_project
 
         public DataTable ShowAvailableRooms(string startDate, string endDate, string branchID)
         {
-            int? branchFilter = null;
-            if (!string.IsNullOrWhiteSpace(branchID)
-                && int.TryParse(branchID, out var bid))
-            {
-                branchFilter = bid;
-            }
-
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -440,20 +433,16 @@ namespace Database_project
                     "LEFT JOIN Room_Reserve AS rr ON rr.Room_NumberRR = r.Room_Number " +
                     "AND rr.BranchIDRR = r.Branch_ID " +
                     "LEFT JOIN Reservation AS res ON res.ReservationID = rr.ReservationIDRR " +
-                    "AND @CheckInDate < res.Check_Out AND @CheckOutDate > res.Check_In " +
+                    "AND @CheckInDate <= res.Check_Out AND @CheckOutDate >= res.Check_In " +
                     "WHERE res.ReservationID IS NULL " +
-                    "AND (r.Branch_ID = @branchID " +
-                    "OR @branchID IS NULL)";
+                    "AND r.Branch_ID = @branchID";
 
 
 
                 SqlCommand checkCmd = new SqlCommand(checkQuery, connection);
                 checkCmd.Parameters.AddWithValue("@CheckInDate", startDate); 
                 checkCmd.Parameters.AddWithValue("@CheckOutDate", endDate);
-                var p = checkCmd.Parameters.Add("@branchID", SqlDbType.Int);
-                p.Value = branchFilter.HasValue
-                          ? (object)branchFilter.Value
-                          : DBNull.Value;
+                checkCmd.Parameters.AddWithValue("@branchID", branchID);
 
                 using (SqlDataReader reader = checkCmd.ExecuteReader())
                 {
