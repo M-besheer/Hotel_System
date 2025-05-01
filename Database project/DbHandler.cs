@@ -8,9 +8,10 @@ using System.Windows.Forms;
 using Microsoft.Data.SqlClient;
 
 
+
 namespace Database_project
 {
-        
+
 
     public class DBHandler
     {
@@ -18,19 +19,19 @@ namespace Database_project
 
         public bool GuestExists(int guestId)
         {
-                using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "SELECT COUNT(*) FROM Guest WHERE GuestID = @GuestID";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    string query = "SELECT COUNT(*) FROM Guest WHERE GuestID = @GuestID";
+                    cmd.Parameters.AddWithValue("@GuestID", guestId);
 
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@GuestID", guestId);
-
-                            conn.Open();
-                            int count = (int)cmd.ExecuteScalar();
-                            return count > 0;
-                    }
+                    conn.Open();
+                    int count = (int)cmd.ExecuteScalar();
+                    return count > 0;
                 }
+            }
         }
 
         public DataTable SearchGuests(string partialId)
@@ -106,19 +107,6 @@ namespace Database_project
             }
         }
 
-
-        public int RoomReserve(int guestId, string firstName, string lastName, string email, string phoneNumber, string streetName, string flatNo, string city, string gFloor)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-
-
-                return 1;
-            }
-        }
-
         public DataTable getReservationsByGuestID(int GuestID)
         {
 
@@ -150,28 +138,6 @@ namespace Database_project
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@GuestID", GuestID);
                 DataTable table = new DataTable();
-        public DataTable ShowAvailableRooms(string startDate, string endDate, string branchID)
-        {
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-                string checkQuery = "SELECT r.Room_Number, r.Branch_ID, r.Price_Per_Night, r.RoomView, r.Room_Type, r.Resident_No FROM Room AS r LEFT JOIN Room_Reserve AS rr ON rr.Room_NumberRR = r.Room_Number AND rr.BranchIDRR = r.Branch_ID LEFT JOIN Reservation AS res ON res.ReservationID = rr.ReservationIDRR AND @CheckInDate < res.Check_Out AND @CheckOutDate > res.Check_In WHERE res.ReservationID IS NULL"; //AND r.Branch_ID = @branchID";
-
-
-                SqlCommand checkCmd = new SqlCommand(checkQuery, connection);
-                checkCmd.Parameters.AddWithValue("@CheckInDate", startDate);
-                checkCmd.Parameters.AddWithValue("@CheckOutDate", endDate);
-                //checkCmd.Parameters.AddWithValue("@branchID", branchID);
-
-                using (SqlDataReader reader = checkCmd.ExecuteReader())
-                {
-                    // Create a DataTable to hold the results
-                    DataTable dt = new DataTable();
-
-                    // Load the DataTable with the data from the SqlDataReader
-                    dt.Load(reader);
 
                 cmd.CommandType = CommandType.Text;
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -191,7 +157,7 @@ namespace Database_project
                     row["Room"] = reader["Room"];
                     table.Rows.Add(row);
                 }
-                if (table.Rows.Count==0)
+                if (table.Rows.Count == 0)
                 {
                     Console.WriteLine("a7a");
                 }
@@ -373,6 +339,6 @@ namespace Database_project
     }
 }
 
-    
-    
+
+
 

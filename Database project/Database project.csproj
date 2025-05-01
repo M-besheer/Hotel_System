@@ -212,12 +212,6 @@
     <Compile Include="Forms\SignUp.Designer.cs">
       <DependentUpon>SignUp.cs</DependentUpon>
     </Compile>
-    <Compile Include="RoomSelect.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="RoomSelect.Designer.cs">
-      <DependentUpon>RoomSelect.cs</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="Forms\CheckReservation.resx">
       <DependentUpon>CheckReservation.cs</DependentUpon>
     </EmbeddedResource>
@@ -248,9 +242,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SignUp.resx">
       <DependentUpon>SignUp.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="RoomSelect.resx">
-      <DependentUpon>RoomSelect.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
