@@ -18,7 +18,7 @@ namespace Database_project
 
     public class DBHandler
     {
-        private readonly string connectionString = @"Data Source=.;Initial Catalog=HotelDatabase;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
+        private readonly string connectionString = @"Data Source=.;Initial Catalog=HotelD;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
 
         public bool GuestExists(int guestId)
         {
@@ -366,7 +366,7 @@ namespace Database_project
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    
+
                     connection.Open();
 
                     SqlDataReader reader = command.ExecuteReader();
@@ -427,30 +427,30 @@ namespace Database_project
         public DataTable ShowAvailableRooms(string startDate, string endDate, string branchID)
         {
 
-                using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string checkQuery = "SELECT r.Room_Number, r.Branch_ID, r.Price_Per_Night, r.RoomView, r.Room_Type, r.Resident_No FROM Room AS r LEFT JOIN Room_Reserve AS rr ON rr.Room_NumberRR = r.Room_Number AND rr.BranchIDRR = r.Branch_ID LEFT JOIN Reservation AS res ON res.ReservationID = rr.ReservationIDRR AND @CheckInDate < res.Check_Out AND @CheckOutDate > res.Check_In WHERE res.ReservationID IS NULL"; //AND r.Branch_ID = @branchID";
+
+
+
+                SqlCommand checkCmd = new SqlCommand(checkQuery, connection);
+                checkCmd.Parameters.AddWithValue("@CheckInDate", startDate);
+                checkCmd.Parameters.AddWithValue("@CheckOutDate", endDate);
+                //checkCmd.Parameters.AddWithValue("@branchID", branchID);
+
+                using (SqlDataReader reader = checkCmd.ExecuteReader())
                 {
-                    connection.Open();
+                    // Create a DataTable to hold the results
+                    DataTable dt = new DataTable();
 
-                    string checkQuery = "SELECT r.Room_Number, r.Branch_ID, r.Price_Per_Night, r.RoomView, r.Room_Type, r.Resident_No FROM Room AS r LEFT JOIN Room_Reserve AS rr ON rr.Room_NumberRR = r.Room_Number AND rr.BranchIDRR = r.Branch_ID LEFT JOIN Reservation AS res ON res.ReservationID = rr.ReservationIDRR AND @CheckInDate < res.Check_Out AND @CheckOutDate > res.Check_In WHERE res.ReservationID IS NULL"; //AND r.Branch_ID = @branchID";
+                    // Load the DataTable with the data from the SqlDataReader
+                    dt.Load(reader);
 
-
-               
-                    SqlCommand checkCmd = new SqlCommand(checkQuery, connection);
-                    checkCmd.Parameters.AddWithValue("@CheckInDate", startDate);
-                    checkCmd.Parameters.AddWithValue("@CheckOutDate", endDate);
-                    //checkCmd.Parameters.AddWithValue("@branchID", branchID);
-
-                    using (SqlDataReader reader = checkCmd.ExecuteReader())
-                    {
-                        // Create a DataTable to hold the results
-                        DataTable dt = new DataTable();
-
-                        // Load the DataTable with the data from the SqlDataReader
-                        dt.Load(reader);
-
-                        return dt;
-                    }
+                    return dt;
                 }
+            }
         }
 
 
@@ -505,9 +505,40 @@ namespace Database_project
         }
 
 
+        public void MakeReservation(
+        int guestId,
+        DateTime checkIn,
+        DateTime checkOut,
+        string meals,
+        DateTime bookingDate,
+        int roomNumber,
+        int branchId,
+        decimal price)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("MakeReservation", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@GuestID", guestId);
+                    cmd.Parameters.AddWithValue("@CheckIn", checkIn);
+                    cmd.Parameters.AddWithValue("@CheckOut", checkOut);
+                    cmd.Parameters.AddWithValue("@Meals", meals);
+                    cmd.Parameters.AddWithValue("@BookingDate", bookingDate);
+                    cmd.Parameters.AddWithValue("@RoomNumber", roomNumber);
+                    cmd.Parameters.AddWithValue("@BranchID", branchId);
+                    cmd.Parameters.AddWithValue("@Price", price);
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+
+        }
     }
 }
-
 
 
 

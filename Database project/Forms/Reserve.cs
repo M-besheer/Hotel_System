@@ -17,6 +17,15 @@ namespace Database_project.Forms
         public Reserve(int guestID, List<string> selectedRooms, string startDate, string endDate)
         {
             InitializeComponent();
+            comboBox1.Items.AddRange(new string[]
+{
+    "Breakfast only",
+    "Dinner Only",
+    "Breakfast and Diner",
+    "Full Board"
+});
+            comboBox1.SelectedIndex = 0; // Default selection
+
 
             _guestID = guestID;
             _roomIDs = selectedRooms;
@@ -88,14 +97,56 @@ namespace Database_project.Forms
 
         private void button1_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Reservation Confirmed!");
 
-            // Here, you can add logic to store reservation details in the database
-            // For now, we just confirm the reservation.
 
-            Form1 done = new Form1(); // Navigate back to Form1 after confirmation
-            done.Show();
-            this.Close();  // Close the current Reserve form
+            
+                DBHandler dbHandler = new DBHandler();
+
+                DateTime checkIn = DateTime.ParseExact(_startDate, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                DateTime checkOut = DateTime.ParseExact(_endDate, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                string selectedMeal = comboBox1.SelectedItem.ToString();
+                DateTime bookingDate = DateTime.Now;
+
+                foreach (DataGridViewRow row in dataGridView2.Rows)
+                {
+                    if (row.IsNewRow) continue;
+
+                    string roomID = row.Cells["Room ID"].Value.ToString();
+                    decimal totalPrice = decimal.Parse(row.Cells["Total Price"].Value.ToString().Replace("$", "").Trim());
+
+                    // Split roomID into room number and branch ID
+                    string[] parts = roomID.Split('-');
+                    if (parts.Length != 2)
+                    {
+                        MessageBox.Show($"Invalid Room ID format: {roomID}");
+                        continue;
+                    }
+
+                    int roomNumber = int.Parse(parts[0]);
+                    int branchId = int.Parse(parts[1]);
+
+                    try
+                    {
+                        dbHandler.MakeReservation(_guestID, checkIn, checkOut, selectedMeal, bookingDate, roomNumber, branchId, totalPrice);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Failed to reserve Room {roomID}: {ex.Message}");
+                    }
+                }
+
+                MessageBox.Show("Reservation Confirmed!");
+
+                Form1 done = new Form1();
+                done.Show();
+                this.Close();
+            }
+
+        
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
