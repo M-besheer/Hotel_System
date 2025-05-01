@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Data.SqlClient;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
 
 
 
 namespace Database_project
 {
-        
+
 
     public class DBHandler
     {
@@ -19,19 +22,19 @@ namespace Database_project
 
         public bool GuestExists(int guestId)
         {
-                using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "SELECT COUNT(*) FROM Guest WHERE GuestID = @GuestID";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    string query = "SELECT COUNT(*) FROM Guest WHERE GuestID = @GuestID";
+                    cmd.Parameters.AddWithValue("@GuestID", guestId);
 
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@GuestID", guestId);
-
-                            conn.Open();
-                            int count = (int)cmd.ExecuteScalar();
-                            return count > 0;
-                    }
+                    conn.Open();
+                    int count = (int)cmd.ExecuteScalar();
+                    return count > 0;
                 }
+            }
         }
 
         public DataTable SearchGuests(string partialId)
@@ -156,7 +159,7 @@ namespace Database_project
                     row["Room"] = reader["Room"];
                     table.Rows.Add(row);
                 }
-                if (table.Rows.Count==0)
+                if (table.Rows.Count == 0)
                 {
                     Console.WriteLine("a7a");
                 }
@@ -270,32 +273,7 @@ namespace Database_project
                     row["Job_Status"] = reader["Job_Status"];
                     table.Rows.Add(row);
                 }
-                if (table.Rows.Count == 0)
-                {
-                    Console.WriteLine("a7a");
-                }
-                if (table.Rows.Count > 0)
-                {
-                    Console.WriteLine("not a7a");
-                }
-                // Print column headers
-                foreach (DataColumn column in table.Columns)
-                {
-                    Console.WriteLine($"{column.ColumnName}\t");
-                }
-                Console.WriteLine();
 
-                Console.WriteLine(new string('-', 50)); // Separator line
-
-                // Print rows
-                foreach (DataRow rows in table.Rows)
-                {
-                    foreach (var item in rows.ItemArray)
-                    {
-                        Console.WriteLine($"{item}\t");
-                    }
-                    Console.WriteLine();
-                }
                 reader.Close();
                 conn.Close();
                 return table;
@@ -303,8 +281,148 @@ namespace Database_project
             }
         }
 
+        public void ShowFullInfo(int StaffID, Employeedetails ed)
+        {
+            try
+            {
+                // Create SQL query to get staff details
+                string query = @"
+                            SELECT 
+                            s.StaffID, 
+                            s.First_Name, 
+                            s.Last_Name, 
+                            s.Email, 
+                            s.Phone_Number, 
+                            s.StaffRole, 
+                            s.Street_Name, 
+                            s.Flat_No, 
+                            s.City, 
+                            s.SFloor, 
+                            s.BranchID, 
+                            s.Manager_ID, 
+                            m.First_Name + ' ' + m.Last_Name AS ManagerName,
+                            s.Job_Status
+                            FROM 
+                                Staff s
+                            LEFT JOIN 
+                                Staff m ON s.Manager_ID = m.StaffID
+                            WHERE 
+                                s.StaffID = @StaffID";
 
+                // Create connection and command
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@StaffID", StaffID);
 
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        // Fetch values from database
+                        int staffID = Convert.ToInt32(reader["StaffID"]);
+                        string firstName = reader["First_Name"].ToString();
+                        string lastName = reader["Last_Name"].ToString();
+                        string email = reader["Email"].ToString();
+                        string phone = reader["Phone_Number"].ToString();
+                        string role = reader["StaffRole"].ToString();
+                        string city = reader["City"].ToString();
+                        string street = reader["Street_Name"].ToString().ToLower();
+                        string flatno = reader["Flat_No"].ToString();
+                        string floor = reader["SFloor"].ToString();
+                        string branch = reader["BranchID"].ToString();
+                        string managerName = reader["ManagerName"]?.ToString() ?? "No Manager";
+                        string managerID = reader["Manager_ID"].ToString();
+                        string status = reader["Job_Status"].ToString();
+
+                        Console.WriteLine("Query obtained successfully!");
+
+                        // Populate existing fields with the fetched values
+                        ed.PopulateFields(staffID, firstName, lastName, email, phone, role, street, city, flatno, floor, branch, managerName, managerID, status);
+                    }
+                    else
+                    {
+                        MessageBox.Show("No details found for the selected employee.", "Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading staff details: {ex.Message}", "Database Error",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public List<string> FetchBranches()
+        {
+            List<string> branches = new List<string>();
+
+            try
+            {
+                // Define the query to fetch all branch names
+                string query = "SELECT BranchID FROM Branch";
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    
+                    connection.Open();
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    // Read each record and add to the list
+                    while (reader.Read())
+                    {
+                        branches.Add(reader["BranchID"].ToString());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error fetching branches: {ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return branches;
+        }
+
+        public void UpdateEmployee(string staffid, string role, string status, string phone, string branch)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+                string query = @"
+                UPDATE Staff
+                SET 
+                    StaffRole = @role,
+                    Phone_Number = @phone,
+                    BranchID = @branch,
+                    Job_Status = @status
+                WHERE StaffID = @staffID";
+                using (SqlCommand command = new SqlCommand(query, con))
+                {
+                    // Add parameters
+                    command.Parameters.AddWithValue("@role", role);
+                    command.Parameters.AddWithValue("@phone", phone);
+                    command.Parameters.AddWithValue("@branch", branch);
+                    command.Parameters.AddWithValue("@status", status);
+                    command.Parameters.AddWithValue("@staffID", staffid);
+
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if (rowsAffected > 0)
+                    {
+                        MessageBox.Show("Employee updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("No rows were updated. Please check the employee ID.", "Update Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+
+                }
+                con.Close();
+            }
+
+        }
     }
 }
 

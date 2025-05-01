@@ -63,6 +63,16 @@ namespace Database_project.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap eye_closed_icon_512x459_ivg8wjcx {
+            get {
+                object obj = ResourceManager.GetObject("eye-closed-icon-512x459-ivg8wjcx", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap pexels_sam_lg_1572036 {
             get {
                 object obj = ResourceManager.GetObject("pexels-sam-lg-1572036", resourceCulture);
