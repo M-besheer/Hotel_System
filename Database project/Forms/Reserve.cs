@@ -136,6 +136,8 @@ namespace Database_project.Forms
             );
 
             MessageBox.Show("Reservation successful!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Form1 form1 = new Form1();
+            form1.Show();
             this.Close();
         }
 
