@@ -377,9 +377,10 @@
             this.Back.Location = new System.Drawing.Point(12, 11);
             this.Back.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Back.Name = "Back";
-            this.Back.Size = new System.Drawing.Size(75, 32);
+            this.Back.Size = new System.Drawing.Size(92, 33);
             this.Back.TabIndex = 77;
             this.Back.Text = "<- Back";
+            this.Back.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.Back.UseVisualStyleBackColor = true;
             this.Back.Click += new System.EventHandler(this.Back_Click);
             // 
