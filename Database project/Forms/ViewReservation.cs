@@ -29,11 +29,12 @@ namespace Database_project
             Meal.Enabled = true;
             BranchName.Enabled = false;
         }
-
+        CheckReservation cr;
         // Make your ID-based ctor call the default one:
-        public ViewReservation(string reservationID)
+        public ViewReservation(string reservationID, CheckReservation cr)
             : this()    // ← this calls ViewReservation()
         {
+            this.cr=cr;
             this.ReservationID = reservationID;
 
             // Now you can do your Meal combo-box setup and load data…
@@ -47,6 +48,7 @@ namespace Database_project
     });
 
             new DBHandler().getReservationInfo(ReservationID, this);
+            this.cr = cr;
         }
 
 
@@ -112,8 +114,7 @@ namespace Database_project
 
         private void Back_Click(object sender, EventArgs e)
         {
-            var checkReservation = new CheckReservation();
-            checkReservation.Show();
+            cr.Show();
             this.Hide();
         }
 
@@ -124,7 +125,8 @@ namespace Database_project
                 BookingDate,
                 Branchid,
                 checkin,
-                checkout
+                checkout,
+                this
             );
             editRooms.Show();
             this.Hide();

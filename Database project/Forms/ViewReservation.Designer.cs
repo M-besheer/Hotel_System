@@ -379,7 +379,7 @@
             this.Back.Name = "Back";
             this.Back.Size = new System.Drawing.Size(75, 32);
             this.Back.TabIndex = 77;
-            this.Back.Text = "Back";
+            this.Back.Text = "<- Back";
             this.Back.UseVisualStyleBackColor = true;
             this.Back.Click += new System.EventHandler(this.Back_Click);
             // 

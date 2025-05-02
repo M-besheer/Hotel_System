@@ -36,7 +36,7 @@
             // 
             // SearchBtn
             // 
-            this.SearchBtn.BackColor = System.Drawing.Color.SeaGreen;
+            this.SearchBtn.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.SearchBtn.FlatAppearance.BorderSize = 3;
             this.SearchBtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.SearchBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -52,7 +52,7 @@
             // 
             // GuestSigUp
             // 
-            this.GuestSigUp.BackColor = System.Drawing.Color.SeaGreen;
+            this.GuestSigUp.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.GuestSigUp.FlatAppearance.BorderSize = 3;
             this.GuestSigUp.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.GuestSigUp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -82,6 +82,9 @@
             // 
             // back_btn
             // 
+            this.back_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.back_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.back_btn.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.back_btn.Location = new System.Drawing.Point(12, 12);
             this.back_btn.Name = "back_btn";
             this.back_btn.Size = new System.Drawing.Size(75, 23);
@@ -89,13 +92,12 @@
             this.back_btn.Text = "<- Back";
             this.back_btn.UseVisualStyleBackColor = true;
             this.back_btn.Click += new System.EventHandler(this.back_btnClick);
-
             // 
             // GuestSearh
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.ForestGreen;
+            this.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.ClientSize = new System.Drawing.Size(807, 449);
             this.Controls.Add(this.back_btn);
             this.Controls.Add(this.SearchBox);

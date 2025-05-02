@@ -13,9 +13,11 @@ namespace Database_project.Forms
 {
     public partial class CheckReservation : Form
     {
-        public CheckReservation()
+        Form f;
+        public CheckReservation(Form f)
         {
             InitializeComponent();
+            this.f = f;
         }
 
 
@@ -38,12 +40,12 @@ namespace Database_project.Forms
                 // Check if any rows were returned
                 if (dataGridView1.Rows.Count == 0)
                 {
-                    MessageBox.Show("No reservations found for this Guest ID");
+                    MessageBox.Show("No reservations found for this Room");
                 }
             }
             else
             {
-                MessageBox.Show("Please enter a valid Guest ID or Room number");
+                MessageBox.Show("Please enter a valid Room number");
             }
 
 
@@ -55,8 +57,7 @@ namespace Database_project.Forms
 
         private void Back_Click(object sender, EventArgs e)
         {
-            Form1 form = new Form1();
-            form.Show();
+            f.Show();
             this.Hide();
         }
 
@@ -79,7 +80,7 @@ namespace Database_project.Forms
             {
                 if (row.Cells["reservationid"].Value != null)
                 {
-                    ViewReservation vs = new ViewReservation(row.Cells["reservationid"].Value.ToString());
+                    ViewReservation vs = new ViewReservation(row.Cells["reservationid"].Value.ToString(),this);
                     vs.Show();
                     this.Hide();
                 }

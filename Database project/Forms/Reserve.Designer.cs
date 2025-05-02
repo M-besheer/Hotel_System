@@ -37,7 +37,7 @@
             // 
             // confirm
             // 
-            this.confirm.BackColor = System.Drawing.Color.SeaGreen;
+            this.confirm.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.confirm.FlatAppearance.BorderSize = 3;
             this.confirm.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.confirm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -64,7 +64,7 @@
             // 
             // back_btn
             // 
-            this.back_btn.BackColor = System.Drawing.Color.SeaGreen;
+            this.back_btn.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.back_btn.FlatAppearance.BorderSize = 2;
             this.back_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.back_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -87,7 +87,7 @@
             // 
             // Reserve
             // 
-            this.BackColor = System.Drawing.Color.ForestGreen;
+            this.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.ClientSize = new System.Drawing.Size(1263, 500);
             this.Controls.Add(this.back_btn);
             this.Controls.Add(this.comboBox1);
