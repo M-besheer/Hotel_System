@@ -588,49 +588,44 @@ namespace Database_project
 
         }
 
-/*        public bool isPaid(int reservationID)
-        {
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                string query = @"
-                    		select count(transactionid) as numberOfTransactions from payment 
-	                        where reservationidp=@ReservationID";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+        /*        public bool isPaid(int reservationID)
                 {
-                    cmd.Parameters.AddWithValue("@ReservationID", reservationID);
+                    using (SqlConnection conn = new SqlConnection(connectionString))
+                    {
+                        string query = @"
+                                    select count(transactionid) as numberOfTransactions from payment 
+                                    where reservationidp=@ReservationID";
 
-                    conn.Open();
-                    int count = (int)cmd.ExecuteScalar();
-                    return count > 0;
-                }
-            }
+                        using (SqlCommand cmd = new SqlCommand(query, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@ReservationID", reservationID);
 
-        }*/
+                            conn.Open();
+                            int count = (int)cmd.ExecuteScalar();
+                            return count > 0;
+                        }
+                    }
 
-        public void updateReservation(string reservationid, string price, string CheckOut, string meal)
+                }*/
+        // In DBHandler.cs
+        public void UpdateReservationMeals(string reservationId, string meals)
         {
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                string query = @"
-                                UPDATE reservation
-                                SET price = @price,
-                                    check_out = @CheckOut,
-	                                Meals = @meal
-                                WHERE reservationid=@reservationid;
-                            ";
+            const string sql = @"
+        UPDATE Reservation
+        SET Meals = @meals
+        WHERE ReservationID = @reservationId;
+    ";
 
-                using (SqlCommand cmd = new SqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@price", price);
-                    cmd.Parameters.AddWithValue("@CheckOut", CheckOut);
-                    cmd.Parameters.AddWithValue("@meal", meal);
-                    cmd.Parameters.AddWithValue("@ReservationID", reservationid);
-                    conn.Open();
-                    MessageBox.Show("Reservation is updated successfully");
-                }
+            using (var conn = new SqlConnection(connectionString))
+            using (var cmd = new SqlCommand(sql, conn))
+            {
+                cmd.Parameters.AddWithValue("@meals", meals);
+                cmd.Parameters.AddWithValue("@reservationId", reservationId);
+                conn.Open();
+                cmd.ExecuteNonQuery();
             }
         }
+
 
 
         public void MakeReservation(

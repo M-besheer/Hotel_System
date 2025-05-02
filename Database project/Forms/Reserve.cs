@@ -21,7 +21,7 @@ namespace Database_project.Forms
         {
             InitializeComponent();
             comboBox1.Items.AddRange(new string[]
-            {
+            {   "No Meals",
                 "Breakfast only",
                 "Dinner Only",
                 "Breakfast and Diner",
