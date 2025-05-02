@@ -689,9 +689,39 @@ namespace Database_project
             }
         }
 
+        public void removeRoomFromReservation(int reservationID, string branchID, List<string> selectedRooms)
+        {
+            using (var conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                // Prepare one command and reuse it
+                string query = "DELETE FROM Room_Reserve WHERE ReservationIDRR = @ReservationID " +
+                                "AND Room_NumberRR = @RoomNumber AND BranchIDRR = @BranchID";
+
+                using (var removeCmd = new SqlCommand(query, conn))
+                {
+                    removeCmd.Parameters.Add("@ReservationID", SqlDbType.Int).Value = reservationID;
+                    removeCmd.Parameters.Add("@RoomNumber", SqlDbType.Int);
+                    removeCmd.Parameters.Add("@BranchID", SqlDbType.Int).Value = int.Parse(branchID);
+
+                    int total = 0;
+                    foreach (var roomText in selectedRooms)
+                    {
+                        if (int.TryParse(roomText, out var roomNum))
+                        {
+                            removeCmd.Parameters["@RoomNumber"].Value = roomNum;
+                            total += removeCmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    MessageBox.Show($"{total} room(s) removed successfully");
+                }
+            }
+        }
+
 
 
 
     }
 }
-

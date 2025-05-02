@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Database_project.Forms;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -30,6 +31,31 @@ namespace Database_project
             DBHandler db = new DBHandler();
             dataGridView2.DataSource = db.ShowAvailableRooms(checkin, checkout, BranchID);
             dataGridView1.DataSource = db.getReservedRooms(reservationId);
+        }
+
+        private void RemoveRoom_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please select a room first.");
+                return;
+            }
+
+            
+
+            var selectedRooms = new List<string>();
+
+            foreach (DataGridViewRow row in dataGridView1.SelectedRows)
+            {
+                var cell = row.Cells["Room_Number"];
+                if (cell?.Value != null)
+                    selectedRooms.Add(cell.Value.ToString());
+            }
+
+            DBHandler db = new DBHandler();
+            db.removeRoomFromReservation(reservationId, BranchID, selectedRooms);
+
+
         }
 
         private void Back_Click(object sender, EventArgs e)
