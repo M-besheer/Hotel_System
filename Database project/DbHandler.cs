@@ -634,30 +634,48 @@ namespace Database_project
 
 
         public void MakeReservation(
-        int guestId,
-        DateTime checkIn,
-        DateTime checkOut,
-        string meals,
-        DateTime bookingDate,
-        int roomNumber,
-        int branchId,
-        decimal price)
+    int guestId,
+    DateTime checkIn,
+    DateTime checkOut,
+    string meals,
+    DateTime bookingDate,
+    List<int> roomNumbers,    // just room numbers
+    int branchId,             // same branch for all
+    decimal price)
         {
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            // Build DataTable matching dbo.RoomListType (RoomNumber, BranchID)
+            var roomsTable = new DataTable();
+            roomsTable.Columns.Add("RoomNumber", typeof(int));
+            roomsTable.Columns.Add("BranchID", typeof(int));
+
+            // Fill with one row per room, all sharing the same branchId
+            foreach (int rn in roomNumbers)
+                roomsTable.Rows.Add(rn, branchId);
+
+            using (var conn = new SqlConnection(connectionString))
+            using (var cmd = new SqlCommand("MakeReservation", conn))
             {
-                using (SqlCommand cmd = new SqlCommand("MakeReservation", conn))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("@GuestID", guestId);
-                    cmd.Parameters.AddWithValue("@CheckIn", checkIn);
-                    cmd.Parameters.AddWithValue("@CheckOut", checkOut);
-                    cmd.Parameters.AddWithValue("@Meals", meals);
-                    cmd.Parameters.AddWithValue("@BookingDate", bookingDate);
-                    cmd.Parameters.AddWithValue("@RoomNumber", roomNumber);
-                    cmd.Parameters.AddWithValue("@BranchID", branchId);
-                    cmd.Parameters.AddWithValue("@Price", price);
+                // Scalar params
+                cmd.Parameters.AddWithValue("@GuestID", guestId);
+                cmd.Parameters.AddWithValue("@CheckIn", checkIn);
+                cmd.Parameters.AddWithValue("@CheckOut", checkOut);
+                cmd.Parameters.AddWithValue("@Meals", meals);
+                cmd.Parameters.AddWithValue("@BookingDate", bookingDate);
+                cmd.Parameters.AddWithValue("@Price", price);
 
+                // Table‐valued param
+                var p = cmd.Parameters.Add("@Rooms", SqlDbType.Structured);
+                p.TypeName = "dbo.RoomListType";
+                p.Value = roomsTable;
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void deleteReservation(int ReservationID)
                     conn.Open();
                     cmd.ExecuteNonQuery();
                 }
