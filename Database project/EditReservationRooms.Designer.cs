@@ -39,6 +39,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.Remove = new System.Windows.Forms.Button();
+            this.Add = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
@@ -114,15 +116,12 @@
             this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.ColumnHeadersVisible = false;
-            this.dataGridView1.EnableHeadersVisualStyles = false;
             this.dataGridView1.GridColor = System.Drawing.Color.DarkSeaGreen;
             this.dataGridView1.Location = new System.Drawing.Point(230, 190);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(334, 119);
+            this.dataGridView1.Size = new System.Drawing.Size(621, 106);
             this.dataGridView1.TabIndex = 84;
             // 
             // label4
@@ -144,11 +143,11 @@
             this.dataGridView2.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView2.GridColor = System.Drawing.Color.DarkSeaGreen;
-            this.dataGridView2.Location = new System.Drawing.Point(37, 401);
+            this.dataGridView2.Location = new System.Drawing.Point(37, 393);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.RowHeadersWidth = 51;
             this.dataGridView2.RowTemplate.Height = 24;
-            this.dataGridView2.Size = new System.Drawing.Size(814, 160);
+            this.dataGridView2.Size = new System.Drawing.Size(814, 122);
             this.dataGridView2.TabIndex = 86;
             // 
             // label2
@@ -157,7 +156,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.Honeydew;
-            this.label2.Location = new System.Drawing.Point(33, 352);
+            this.label2.Location = new System.Drawing.Point(30, 357);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(175, 23);
             this.label2.TabIndex = 85;
@@ -187,12 +186,48 @@
             this.label7.TabIndex = 87;
             this.label7.Text = "Branch ID:";
             // 
+            // Remove
+            // 
+            this.Remove.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.Remove.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.Remove.FlatAppearance.BorderSize = 3;
+            this.Remove.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.Remove.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Remove.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.Remove.Location = new System.Drawing.Point(722, 301);
+            this.Remove.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Remove.Name = "Remove";
+            this.Remove.Size = new System.Drawing.Size(95, 32);
+            this.Remove.TabIndex = 89;
+            this.Remove.Text = "Remove";
+            this.Remove.UseVisualStyleBackColor = true;
+            this.Remove.Click += new System.EventHandler(this.Remove_Click);
+            // 
+            // Add
+            // 
+            this.Add.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.Add.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.Add.FlatAppearance.BorderSize = 3;
+            this.Add.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.Add.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Add.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.Add.Location = new System.Drawing.Point(742, 520);
+            this.Add.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Add.Name = "Add";
+            this.Add.Size = new System.Drawing.Size(75, 32);
+            this.Add.TabIndex = 90;
+            this.Add.Text = "Add";
+            this.Add.UseVisualStyleBackColor = true;
+            this.Add.Click += new System.EventHandler(this.Add_Click);
+            // 
             // EditReservationRooms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.ClientSize = new System.Drawing.Size(888, 573);
+            this.Controls.Add(this.Add);
+            this.Controls.Add(this.Remove);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.dataGridView2);
@@ -226,5 +261,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button Remove;
+        private System.Windows.Forms.Button Add;
     }
 }

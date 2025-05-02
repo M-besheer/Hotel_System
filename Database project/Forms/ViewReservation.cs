@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,12 +28,12 @@ namespace Database_project
             Meal.Enabled = true;
             BranchName.Enabled = true;
         }
-        int ReservationID;
+        string ReservationID;
         string BookingDate;
         string Branchid;
         string checkin;
         string checkout;
-        public ViewReservation(int ReservationID)
+        public ViewReservation(string ReservationID)
         {
             this.ReservationID = ReservationID;
             InitializeComponent();
@@ -40,7 +41,7 @@ namespace Database_project
             db.getReservationInfo(ReservationID,this);
         }
 
-        public void PopulateFields(int Reservation, string bookingDate, string guestID, string guestName, string phoneNumber, string guestEmail, string checkIN, string checkOUT, string price, string meal, string branchName, string Branchid)
+        public void PopulateFields(string Reservation, string bookingDate, string guestID, string guestName, string phoneNumber, string guestEmail, string checkIN, string checkOUT, string price, string meal, string branchName, string Branchid)
         {
             label5.Text = Reservation.ToString();
             label6.Text = bookingDate.ToString();
@@ -64,27 +65,22 @@ namespace Database_project
             this.checkin = checkIN;
             this.checkout = checkOUT;
 
-            if (db.isPaid(Reservation))
+            string currentDate = DateTime.Now.ToString("yyyy-MM-dd");
+
+            DateTime current = DateTime.ParseExact(currentDate, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            DateTime check_out_date = DateTime.ParseExact(checkOUT, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            if (current >= check_out_date)
             {
-                Delete.Visible = false;
+                EditRooms.Visible = false;
+                UPDATE.Visible = false;
             }
             else
             {
-                Delete.Visible = true;
+                EditRooms.Visible = true;
+                UPDATE.Visible = true;
             }
-
         }
 
-
-
-        private void Delete_Click(object sender, EventArgs e)
-        {
-            DBHandler db = new DBHandler();
-            db.deleteReservation(ReservationID);
-            CheckReservation checkReservation = new CheckReservation();
-            checkReservation.Show();
-            this.Hide();
-        }
 
         private void Back_Click(object sender, EventArgs e)
         {
@@ -100,16 +96,12 @@ namespace Database_project
             this.Hide();
         }
 
-        private void Refresh_Click(object sender, EventArgs e)
-        {
-            ViewReservation viewReservation = new ViewReservation(ReservationID);
-            viewReservation.Show();
-            this.Hide();
-        }
 
         private void UPDATE_Click(object sender, EventArgs e)
         {
 
         }
+
+
     }
 }

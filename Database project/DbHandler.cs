@@ -513,7 +513,7 @@ namespace Database_project
 
 
 
-        public void getReservationInfo(int ReservationID, ViewReservation rs)
+        public void getReservationInfo(string ReservationID, ViewReservation rs)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -567,34 +567,28 @@ namespace Database_project
 
         }
 
-        public DataTable getReservedRooms(int ReservationID)
+        public DataTable getReservedRooms(string ReservationID)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
                 string query = @"
-                    select room_Numberrr as Rooms from room_reserve where reservationidrr=@ReservationID
+                        select r.Room_Number,r.Price_Per_Night,r.RoomView,r.Room_Type  from room r
+                        join room_reserve rr on r.room_number = rr.room_numberrr
+                        where reservationidrr=@ReservationID
                     		";
                 SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@ReservationID", ReservationID.ToString());
+                cmd.Parameters.AddWithValue("@ReservationID", ReservationID);
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 DataTable table = new DataTable();
-                cmd.CommandType = CommandType.Text;
-                SqlDataReader reader = cmd.ExecuteReader();
-                table.Columns.Add("Rooms");
-                DataRow row;
-                while (reader.Read())
-                {
-                    row = table.NewRow();
-                    row["Rooms"] = reader["Rooms"];
-                    table.Rows.Add(row);
-                }
+                adapter.Fill(table);
 
                 return table;
             }
 
         }
 
-        public bool isPaid(int reservationID)
+/*        public bool isPaid(int reservationID)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -612,15 +606,15 @@ namespace Database_project
                 }
             }
 
-        }
+        }*/
 
-        public void updateReservation(string reservationid, string CheckIn, string CheckOut, string meal)
+        public void updateReservation(string reservationid, string price, string CheckOut, string meal)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 string query = @"
                                 UPDATE reservation
-                                SET Check_in = @CheckIn,
+                                SET price = @price,
                                     check_out = @CheckOut,
 	                                Meals = @meal
                                 WHERE reservationid=@reservationid;
@@ -628,7 +622,7 @@ namespace Database_project
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@CheckIn", CheckIn);
+                    cmd.Parameters.AddWithValue("@price", price);
                     cmd.Parameters.AddWithValue("@CheckOut", CheckOut);
                     cmd.Parameters.AddWithValue("@meal", meal);
                     cmd.Parameters.AddWithValue("@ReservationID", reservationid);
@@ -640,53 +634,70 @@ namespace Database_project
 
 
         public void MakeReservation(
-        int guestId,
-        DateTime checkIn,
-        DateTime checkOut,
-        string meals,
-        DateTime bookingDate,
-        int roomNumber,
-        int branchId,
-        decimal price)
+    int guestId,
+    DateTime checkIn,
+    DateTime checkOut,
+    string meals,
+    DateTime bookingDate,
+    List<int> roomNumbers,    // just room numbers
+    int branchId,             // same branch for all
+    decimal price)
         {
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            // Build DataTable matching dbo.RoomListType (RoomNumber, BranchID)
+            var roomsTable = new DataTable();
+            roomsTable.Columns.Add("RoomNumber", typeof(int));
+            roomsTable.Columns.Add("BranchID", typeof(int));
+
+            // Fill with one row per room, all sharing the same branchId
+            foreach (int rn in roomNumbers)
+                roomsTable.Rows.Add(rn, branchId);
+
+            using (var conn = new SqlConnection(connectionString))
+            using (var cmd = new SqlCommand("MakeReservation", conn))
             {
-                using (SqlCommand cmd = new SqlCommand("MakeReservation", conn))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("@GuestID", guestId);
-                    cmd.Parameters.AddWithValue("@CheckIn", checkIn);
-                    cmd.Parameters.AddWithValue("@CheckOut", checkOut);
-                    cmd.Parameters.AddWithValue("@Meals", meals);
-                    cmd.Parameters.AddWithValue("@BookingDate", bookingDate);
-                    cmd.Parameters.AddWithValue("@RoomNumber", roomNumber);
-                    cmd.Parameters.AddWithValue("@BranchID", branchId);
-                    cmd.Parameters.AddWithValue("@Price", price);
+                // Scalar params
+                cmd.Parameters.AddWithValue("@GuestID", guestId);
+                cmd.Parameters.AddWithValue("@CheckIn", checkIn);
+                cmd.Parameters.AddWithValue("@CheckOut", checkOut);
+                cmd.Parameters.AddWithValue("@Meals", meals);
+                cmd.Parameters.AddWithValue("@BookingDate", bookingDate);
+                cmd.Parameters.AddWithValue("@Price", price);
 
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
-                }
+                // Table‐valued param
+                var p = cmd.Parameters.Add("@Rooms", SqlDbType.Structured);
+                p.TypeName = "dbo.RoomListType";
+                p.Value = roomsTable;
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
             }
         }
-        public void deleteReservation(int ReservationID)
+
+
+
+
+
+        public void removeRoomFromReservation(string reservationID, string branchID, string selectedRooms)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                string query = @"
-                    		DELETE FROM Room_Reserve WHERE ReservationIDRR = @ReservationID;
-                            DELETE FROM Reservation WHERE reservationid = @ReservationID;
-                            ";
+                string query = "DELETE FROM Room_Reserve WHERE ReservationIDRR= @ReservationID " +
+                                "AND BranchIDRR = @BranchID AND Room_NumberRR = @Room_Number ";
 
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlCommand removeCmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@ReservationID", ReservationID.ToString());
-                    cmd.ExecuteNonQuery();
-                    MessageBox.Show("Reservation is deleted successfully");
+                    removeCmd.Parameters.AddWithValue("@ReservationID", reservationID);
+                    removeCmd.Parameters.AddWithValue("@Room_Number", selectedRooms);
+                    removeCmd.Parameters.AddWithValue("@BranchID", branchID);
+                    removeCmd.ExecuteNonQuery();
+
                 }
 
             }
+
         }
 
         public void removeRoomFromReservation(int reservationID, string branchID, List<string> selectedRooms)
@@ -719,6 +730,30 @@ namespace Database_project
                 }
             }
         }
+
+
+        public void addRoomToReservation(string reservationID, string branchID, string selectedRooms)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = @"INSERT INTO Room_Reserve 
+                    VALUES(@reservationID, @selectedRooms, @branchID)";
+
+                using (SqlCommand removeCmd = new SqlCommand(query, conn))
+                {
+                    removeCmd.Parameters.AddWithValue("@reservationID", reservationID);
+                    removeCmd.Parameters.AddWithValue("@selectedRooms", selectedRooms);                    
+                    removeCmd.Parameters.AddWithValue("@branchID", branchID);
+
+                    removeCmd.ExecuteNonQuery();
+
+                }
+
+            }
+
+        }
+
 
 
 

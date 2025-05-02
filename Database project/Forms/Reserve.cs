@@ -93,43 +93,54 @@ namespace Database_project.Forms
         private void confirm_Click(object sender, EventArgs e)
         {
             DBHandler dbHandler = new DBHandler();
+
+            // Parse dates
             DateTime checkIn = DateTime.ParseExact(_startDate, "yyyy-MM-dd", CultureInfo.InvariantCulture);
             DateTime checkOut = DateTime.ParseExact(_endDate, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-            string meals = comboBox1.SelectedItem.ToString();
             DateTime bookingDate = DateTime.Now;
+            string meals = comboBox1.SelectedItem.ToString();
 
             int totalNights = (checkOut - checkIn).Days + 1;
+
+            // Build up lists and total price
+            var roomNumbers = new List<int>();
+            decimal totalPrice = 0m;
 
             foreach (var roomID in _roomIDs)
             {
                 DataTable roomDetails = dbHandler.GetRoomDetails(roomID);
-                if (roomDetails.Rows.Count > 0)
-                {
-                    var row = roomDetails.Rows[0];
-                    decimal pricePerNight = Convert.ToDecimal(row["Price_Per_Night"]);
-                    decimal totalPrice = pricePerNight * totalNights;
-                    int roomNumber = int.Parse(roomID); // Assuming roomID is a number in string form
-
-                    dbHandler.MakeReservation(
-                        _guestID,
-                        checkIn,
-                        checkOut,
-                        meals,
-                        bookingDate,
-                        roomNumber,
-                        _branchID,
-                        totalPrice
-                    );
-                }
-                else
+                if (roomDetails.Rows.Count == 0)
                 {
                     MessageBox.Show($"Room not found: {roomID}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
+
+                var row = roomDetails.Rows[0];
+                decimal pricePerNight = Convert.ToDecimal(row["Price_Per_Night"]);
+                decimal roomTotal = pricePerNight * totalNights;
+
+                roomNumbers.Add(int.Parse(roomID));
+                totalPrice += roomTotal;
             }
 
+            // Single TVP‐based reservation call
+            dbHandler.MakeReservation(
+                guestId: _guestID,
+                checkIn: checkIn,
+                checkOut: checkOut,
+                meals: meals,
+                bookingDate: bookingDate,
+                roomNumbers: roomNumbers,   // List<int> of all selected rooms
+                branchId: _branchID,     // same for every room
+                price: totalPrice     // grand total for all rooms
+            );
+
             MessageBox.Show("Reservation successful!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Form1 form1 = new Form1();
+            form1.Show();
             this.Close();
         }
+
         private void back_btnClick(object sender, EventArgs e)
         {
             roomSelect.Show();

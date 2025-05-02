@@ -51,14 +51,12 @@
             this.label14 = new System.Windows.Forms.Label();
             this.CheckOUT = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Delete = new System.Windows.Forms.Button();
             this.BranchName = new System.Windows.Forms.TextBox();
             this.Branch = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.Back = new System.Windows.Forms.Button();
             this.EditRooms = new System.Windows.Forms.Button();
-            this.Refresh = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -218,7 +216,7 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.Honeydew;
-            this.label4.Location = new System.Drawing.Point(65, 405);
+            this.label4.Location = new System.Drawing.Point(65, 420);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(76, 23);
             this.label4.TabIndex = 38;
@@ -287,6 +285,7 @@
             // CheckIN
             // 
             this.CheckIN.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.CheckIN.Enabled = false;
             this.CheckIN.ForeColor = System.Drawing.Color.Black;
             this.CheckIN.Location = new System.Drawing.Point(178, 257);
             this.CheckIN.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -322,33 +321,13 @@
             this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.ColumnHeadersVisible = false;
-            this.dataGridView1.EnableHeadersVisualStyles = false;
             this.dataGridView1.GridColor = System.Drawing.Color.DarkSeaGreen;
-            this.dataGridView1.Location = new System.Drawing.Point(178, 405);
+            this.dataGridView1.Location = new System.Drawing.Point(178, 430);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(208, 143);
+            this.dataGridView1.Size = new System.Drawing.Size(723, 96);
             this.dataGridView1.TabIndex = 70;
-            // 
-            // Delete
-            // 
-            this.Delete.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.Delete.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.Delete.FlatAppearance.BorderSize = 3;
-            this.Delete.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.Delete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Delete.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.Delete.Location = new System.Drawing.Point(485, 558);
-            this.Delete.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Delete.Name = "Delete";
-            this.Delete.Size = new System.Drawing.Size(202, 46);
-            this.Delete.TabIndex = 71;
-            this.Delete.Text = "DELETE";
-            this.Delete.UseVisualStyleBackColor = true;
-            this.Delete.Click += new System.EventHandler(this.Delete_Click);
             // 
             // BranchName
             // 
@@ -422,7 +401,7 @@
             this.EditRooms.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.EditRooms.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EditRooms.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.EditRooms.Location = new System.Drawing.Point(66, 430);
+            this.EditRooms.Location = new System.Drawing.Point(66, 445);
             this.EditRooms.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.EditRooms.Name = "EditRooms";
             this.EditRooms.Size = new System.Drawing.Size(75, 32);
@@ -431,37 +410,18 @@
             this.EditRooms.UseVisualStyleBackColor = true;
             this.EditRooms.Click += new System.EventHandler(this.EditRooms_Click);
             // 
-            // Refresh
-            // 
-            this.Refresh.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.Refresh.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.Refresh.FlatAppearance.BorderSize = 3;
-            this.Refresh.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.Refresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Refresh.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.Refresh.Location = new System.Drawing.Point(32, 558);
-            this.Refresh.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Refresh.Name = "Refresh";
-            this.Refresh.Size = new System.Drawing.Size(202, 46);
-            this.Refresh.TabIndex = 79;
-            this.Refresh.Text = "REFRESH";
-            this.Refresh.UseVisualStyleBackColor = true;
-            this.Refresh.Click += new System.EventHandler(this.Refresh_Click);
-            // 
             // ViewReservation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.ClientSize = new System.Drawing.Size(962, 615);
-            this.Controls.Add(this.Refresh);
             this.Controls.Add(this.EditRooms);
             this.Controls.Add(this.Back);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.BranchName);
             this.Controls.Add(this.Branch);
-            this.Controls.Add(this.Delete);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.CheckOUT);
             this.Controls.Add(this.label14);
@@ -517,13 +477,11 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox CheckOUT;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.Button Delete;
         private System.Windows.Forms.TextBox BranchName;
         private System.Windows.Forms.Label Branch;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button Back;
         private System.Windows.Forms.Button EditRooms;
-        private System.Windows.Forms.Button Refresh;
     }
 }

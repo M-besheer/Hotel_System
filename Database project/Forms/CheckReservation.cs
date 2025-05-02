@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
 
 namespace Database_project.Forms
 {
@@ -22,25 +23,10 @@ namespace Database_project.Forms
         {
             int guestID;
             int RoomNumber;
-            Console.WriteLine(GuestID.Text);
-            if (int.TryParse(GuestID.Text, out guestID))
-            {
-                DBHandler db = new DBHandler();
-                dataGridView1.DataSource = db.getReservationsByGuestID(guestID);
-                dataGridView1.AutoGenerateColumns = true;
-                dataGridView1.ReadOnly = true;
-                dataGridView1.AllowUserToAddRows = false;
-                dataGridView1.Refresh();
-
-                // Check if any rows were returned
-                if (dataGridView1.Rows.Count == 0)
-                {
-                    MessageBox.Show("No reservations found for this Guest ID");
-                }
 
 
-            }
-            else if (int.TryParse(roomNumber.Text, out RoomNumber))
+            
+            if (int.TryParse(roomNumber.Text, out RoomNumber))
             {
                 DBHandler db = new DBHandler();
                 dataGridView1.DataSource = db.getReservationsByRoomNumber(RoomNumber);
@@ -65,12 +51,7 @@ namespace Database_project.Forms
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            ViewReservation vs = new ViewReservation(1);
-            vs.Show();
-            this.Hide();
-        }
+
 
         private void Back_Click(object sender, EventArgs e)
         {
@@ -79,5 +60,30 @@ namespace Database_project.Forms
             this.Hide();
         }
 
+        private void Check_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please select a reservation first.");
+                return;
+            }
+            else if (dataGridView1.SelectedRows.Count > 1)
+            {
+                MessageBox.Show("Select only one.");
+                return;
+            }
+
+            DBHandler db = new DBHandler();
+
+            foreach (DataGridViewRow row in dataGridView1.SelectedRows)
+            {
+                if (row.Cells["reservationid"].Value != null)
+                {
+                    ViewReservation vs = new ViewReservation(row.Cells["reservationid"].Value.ToString());
+                    vs.Show();
+                    this.Hide();
+                }
+            }
+        }
     }
 }
