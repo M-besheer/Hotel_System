@@ -675,12 +675,6 @@ namespace Database_project
             }
         }
 
-        public void deleteReservation(int ReservationID)
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
-                }
-            }
-        }
 
 
 

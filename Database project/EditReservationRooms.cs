@@ -79,7 +79,7 @@ namespace Database_project
         private void Add_Click(object sender, EventArgs e)
         {
 
-            if (dataGridView1.SelectedRows.Count == 0)
+            if (dataGridView2.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Please select a room first.");
                 return;
