@@ -430,15 +430,15 @@ namespace Database_project
             {
                 connection.Open();
 
-                string checkQuery =
-                    "SELECT r.Room_Number, r.Branch_ID, r.Price_Per_Night, r.RoomView, r.Room_Type, r.Resident_No " +
-                    "FROM Room AS r " +
-                    "LEFT JOIN Room_Reserve AS rr ON rr.Room_NumberRR = r.Room_Number " +
+                string checkQuery = "SELECT r.Room_Number, r.Branch_ID, r.Price_Per_Night, r.RoomView, r.Room_Type, r.Resident_No " +
+                    "FROM Room AS r WHERE r.Branch_ID = @branchID " +
+                    "AND NOT EXISTS " +
+                    "( SELECT 1 FROM Room_Reserve rr " +
+                    "INNER JOIN Reservation res ON rr.ReservationIDRR = res.ReservationID " +
+                    "WHERE rr.Room_NumberRR = r.Room_Number " +
                     "AND rr.BranchIDRR = r.Branch_ID " +
-                    "LEFT JOIN Reservation AS res ON res.ReservationID = rr.ReservationIDRR " +
-                    "AND @CheckInDate <= res.Check_Out AND @CheckOutDate >= res.Check_In " +
-                    "WHERE res.ReservationID IS NULL " +
-                    "AND r.Branch_ID = @branchID";
+                    "AND @CheckInDate <= res.Check_Out " +
+                    "AND @CheckOutDate >= res.Check_In)";
 
 
 
