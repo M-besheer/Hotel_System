@@ -15,11 +15,10 @@ namespace Database_project
         private string checkin;
         private string checkout;
 
+        // Keep your parameterless constructor as-is, with all the .Enabled = false calls:
         public ViewReservation()
         {
             InitializeComponent();
-
-            // Make fields read-only
             GuestID.Enabled = false;
             GuestName.Enabled = false;
             PhoneNumber.Enabled = false;
@@ -27,30 +26,29 @@ namespace Database_project
             CheckIN.Enabled = false;
             CheckOUT.Enabled = false;
             Price.Enabled = false;
-            Meal.Enabled = true;        // allow selecting new meal
+            Meal.Enabled = true;
             BranchName.Enabled = false;
         }
 
+        // Make your ID-based ctor call the default one:
         public ViewReservation(string reservationID)
+            : this()    // ← this calls ViewReservation()
         {
-            InitializeComponent();
             this.ReservationID = reservationID;
 
-            // Configure Meal combo-box as a drop-down list
+            // Now you can do your Meal combo-box setup and load data…
             Meal.DropDownStyle = ComboBoxStyle.DropDownList;
-            Meal.Items.AddRange(new string[]
-            {
-                "No Meals",
-                "Breakfast only",
-                "Dinner Only",
-                "Breakfast and Dinner",
-                "Full Board"
-            });
+            Meal.Items.AddRange(new[] {
+        "No Meals",
+        "Breakfast only",
+        "Dinner Only",
+        "Breakfast and Dinner",
+        "Full Board"
+    });
 
-            // Load reservation info into form
-            DBHandler db = new DBHandler();
-            db.getReservationInfo(ReservationID, this);
+            new DBHandler().getReservationInfo(ReservationID, this);
         }
+
 
         /// <summary>
         /// Populates UI fields with reservation data.
