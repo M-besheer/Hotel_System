@@ -30,52 +30,32 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.roomNumber = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.GuestID = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
-            this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.button2 = new System.Windows.Forms.Button();
             this.Back = new System.Windows.Forms.Button();
+            this.Check = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(354, 246);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(404, 169);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(95, 16);
+            this.label1.Size = new System.Drawing.Size(125, 22);
             this.label1.TabIndex = 0;
             this.label1.Text = "Room Number";
             // 
             // roomNumber
             // 
-            this.roomNumber.Location = new System.Drawing.Point(341, 265);
+            this.roomNumber.Location = new System.Drawing.Point(218, 194);
             this.roomNumber.Name = "roomNumber";
-            this.roomNumber.Size = new System.Drawing.Size(120, 22);
+            this.roomNumber.Size = new System.Drawing.Size(488, 22);
             this.roomNumber.TabIndex = 1;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(363, 138);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(71, 20);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "GuestID";
-            // 
-            // GuestID
-            // 
-            this.GuestID.Location = new System.Drawing.Point(341, 161);
-            this.GuestID.MaxLength = 100000;
-            this.GuestID.Name = "GuestID";
-            this.GuestID.Size = new System.Drawing.Size(120, 22);
-            this.GuestID.TabIndex = 3;
             // 
             // label3
             // 
@@ -92,21 +72,11 @@
             this.sqlCommand1.CommandTimeout = 30;
             this.sqlCommand1.EnableOptimizedParameterBinding = false;
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(122, 105);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(100, 29);
-            this.label4.TabIndex = 5;
-            this.label4.Text = "Checkin";
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(122, 213);
+            this.label5.Location = new System.Drawing.Point(65, 126);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(114, 29);
             this.label5.TabIndex = 6;
@@ -114,7 +84,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(660, 202);
+            this.button1.Location = new System.Drawing.Point(422, 222);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 7;
@@ -125,22 +95,12 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 302);
+            this.dataGridView1.Location = new System.Drawing.Point(12, 261);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(859, 236);
+            this.dataGridView1.Size = new System.Drawing.Size(859, 225);
             this.dataGridView1.TabIndex = 8;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(650, 77);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 9;
-            this.button2.Text = "Search";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // Back
             // 
@@ -159,9 +119,15 @@
             this.Back.UseVisualStyleBackColor = true;
             this.Back.Click += new System.EventHandler(this.Back_Click);
             // 
-            // back_btn
+            // Check
             // 
-
+            this.Check.Location = new System.Drawing.Point(768, 503);
+            this.Check.Name = "Check";
+            this.Check.Size = new System.Drawing.Size(75, 23);
+            this.Check.TabIndex = 71;
+            this.Check.Text = "Check";
+            this.Check.UseVisualStyleBackColor = true;
+            this.Check.Click += new System.EventHandler(this.Check_Click);
             // 
             // CheckReservation
             // 
@@ -169,15 +135,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.ClientSize = new System.Drawing.Size(883, 550);
+            this.Controls.Add(this.Check);
             this.Controls.Add(this.Back);
-            this.Controls.Add(this.button2);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.GuestID);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.roomNumber);
             this.Controls.Add(this.label1);
             this.Name = "CheckReservation";
@@ -191,16 +154,13 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox GuestID;
         private System.Windows.Forms.Label label3;
         private Microsoft.Data.SqlClient.SqlCommand sqlCommand1;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.DataGridView dataGridView1;
         public System.Windows.Forms.TextBox roomNumber;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button Back;
+        private System.Windows.Forms.Button Check;
     }
 }
