@@ -38,31 +38,6 @@ namespace Database_project
             dataGridView1.DataSource = db.getReservedRooms(reservationId);
         }
 
-        private void RemoveRoom_Click(object sender, EventArgs e)
-        {
-            if (dataGridView1.SelectedRows.Count == 0)
-            {
-                MessageBox.Show("Please select a room first.");
-                return;
-            }
-
-            
-
-            var selectedRooms = new List<string>();
-
-            foreach (DataGridViewRow row in dataGridView1.SelectedRows)
-            {
-                var cell = row.Cells["Room_Number"];
-                if (cell?.Value != null)
-                    selectedRooms.Add(cell.Value.ToString());
-            }
-
-            DBHandler db = new DBHandler();
-            db.removeRoomFromReservation(reservationId, BranchID, selectedRooms);
-
-
-        }
-
         private void Back_Click(object sender, EventArgs e)
         {
             ViewReservation viewReservation = new ViewReservation(reservationId);
@@ -105,7 +80,7 @@ namespace Database_project
         private void Add_Click(object sender, EventArgs e)
         {
 
-            if (dataGridView1.SelectedRows.Count == 0)
+            if (dataGridView2.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Please select a room first.");
                 return;
