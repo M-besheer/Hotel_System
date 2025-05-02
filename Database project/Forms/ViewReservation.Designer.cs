@@ -35,7 +35,6 @@
             this.textBox9 = new System.Windows.Forms.TextBox();
             this.GuestID = new System.Windows.Forms.TextBox();
             this.textBox8 = new System.Windows.Forms.TextBox();
-            this.Meal = new System.Windows.Forms.TextBox();
             this.Price = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
@@ -57,6 +56,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.Back = new System.Windows.Forms.Button();
             this.EditRooms = new System.Windows.Forms.Button();
+            this.Meal = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -140,16 +140,6 @@
             this.textBox8.Name = "textBox8";
             this.textBox8.Size = new System.Drawing.Size(265, 22);
             this.textBox8.TabIndex = 56;
-            // 
-            // Meal
-            // 
-            this.Meal.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.Meal.ForeColor = System.Drawing.Color.Black;
-            this.Meal.Location = new System.Drawing.Point(651, 387);
-            this.Meal.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Meal.Name = "Meal";
-            this.Meal.Size = new System.Drawing.Size(265, 22);
-            this.Meal.TabIndex = 53;
             // 
             // Price
             // 
@@ -410,12 +400,21 @@
             this.EditRooms.UseVisualStyleBackColor = true;
             this.EditRooms.Click += new System.EventHandler(this.EditRooms_Click);
             // 
+            // Meal
+            // 
+            this.Meal.FormattingEnabled = true;
+            this.Meal.Location = new System.Drawing.Point(649, 383);
+            this.Meal.Name = "Meal";
+            this.Meal.Size = new System.Drawing.Size(266, 24);
+            this.Meal.TabIndex = 79;
+            // 
             // ViewReservation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.ClientSize = new System.Drawing.Size(962, 615);
+            this.Controls.Add(this.Meal);
             this.Controls.Add(this.EditRooms);
             this.Controls.Add(this.Back);
             this.Controls.Add(this.label6);
@@ -433,7 +432,6 @@
             this.Controls.Add(this.textBox9);
             this.Controls.Add(this.GuestID);
             this.Controls.Add(this.textBox8);
-            this.Controls.Add(this.Meal);
             this.Controls.Add(this.Price);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.label12);
@@ -461,7 +459,6 @@
         private System.Windows.Forms.TextBox textBox9;
         private System.Windows.Forms.TextBox GuestID;
         private System.Windows.Forms.TextBox textBox8;
-        private System.Windows.Forms.TextBox Meal;
         private System.Windows.Forms.TextBox Price;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label11;
@@ -483,5 +480,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button Back;
         private System.Windows.Forms.Button EditRooms;
+        private System.Windows.Forms.ComboBox Meal;
     }
 }
