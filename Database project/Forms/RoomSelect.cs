@@ -11,11 +11,32 @@ namespace Database_project
         private int CguestID;
         private GuestSearh guestSearch;
 
-        public RoomSelect(GuestSearh guest_Search,int guestID)
+        public RoomSelect(GuestSearh guest_Search, int guestID)
         {
             InitializeComponent();
             guestSearch = guest_Search;
             CguestID = guestID;
+
+            // Wire up event
+            Checkin.ValueChanged += Checkin_ValueChanged;
+        }
+
+        private void RoomSelect_Load(object sender, EventArgs e)
+        {
+            // Prevent past dates
+            Checkin.MinDate = DateTime.Today;
+            CheckOut.MinDate = DateTime.Today.AddDays(1);
+        }
+
+        private void Checkin_ValueChanged(object sender, EventArgs e)
+        {
+            // Make sure CheckOut date is always after Checkin
+            if (CheckOut.Value <= Checkin.Value)
+            {
+                CheckOut.Value = Checkin.Value.AddDays(1);
+            }
+
+            CheckOut.MinDate = Checkin.Value.AddDays(1);
         }
 
         private void View_Rooms(object sender, EventArgs e)
@@ -34,11 +55,6 @@ namespace Database_project
             dataGridRooms.Refresh();
         }
 
-        private void RoomSelect_Load(object sender, EventArgs e)
-        {
-            // You can leave this empty or remove it.
-        }
-
         private void Pay_Click(object sender, EventArgs e)
         {
             if (dataGridRooms.SelectedRows.Count == 0)
@@ -51,6 +67,12 @@ namespace Database_project
             string startDate = Checkin.Value.ToString("yyyy-MM-dd");
             string endDate = CheckOut.Value.ToString("yyyy-MM-dd");
 
+            if (Checkin.Value < DateTime.Today || CheckOut.Value <= Checkin.Value)
+            {
+                MessageBox.Show("Invalid date selection. Please choose a valid check-in and check-out date.");
+                return;
+            }
+
             List<string> selectedRooms = new List<string>();
 
             foreach (DataGridViewRow row in dataGridRooms.SelectedRows)
@@ -60,23 +82,22 @@ namespace Database_project
                     selectedRooms.Add(row.Cells["Room_Number"].Value.ToString());
                 }
             }
+
             if (!int.TryParse(BranchNumber.Text.Trim(), out int branchID))
             {
                 MessageBox.Show("Invalid branch ID. Please enter a valid number.");
                 return;
             }
 
-
             Reserve reserveForm = new Reserve(this, branchID, guestID, selectedRooms, startDate, endDate);
             reserveForm.Show();
             this.Hide();
         }
+
         private void back_btnClick(object sender, EventArgs e)
         {
             guestSearch.Show();
             this.Close();
         }
-
-       
     }
 }
