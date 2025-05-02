@@ -10,6 +10,7 @@ namespace Database_project
     {
         private int CguestID;
         private GuestSearh guestSearch;
+        private bool isRoomListCurrent = false;
 
         public RoomSelect(GuestSearh guest_Search, int guestID)
         {
@@ -17,26 +18,32 @@ namespace Database_project
             guestSearch = guest_Search;
             CguestID = guestID;
 
-            // Wire up event
             Checkin.ValueChanged += Checkin_ValueChanged;
+            CheckOut.ValueChanged += CheckOut_ValueChanged;
         }
 
         private void RoomSelect_Load(object sender, EventArgs e)
         {
-            // Prevent past dates
             Checkin.MinDate = DateTime.Today;
             CheckOut.MinDate = DateTime.Today.AddDays(1);
         }
 
         private void Checkin_ValueChanged(object sender, EventArgs e)
         {
-            // Make sure CheckOut date is always after Checkin
             if (CheckOut.Value <= Checkin.Value)
-            {
                 CheckOut.Value = Checkin.Value.AddDays(1);
-            }
 
             CheckOut.MinDate = Checkin.Value.AddDays(1);
+
+            isRoomListCurrent = false; // Mark list outdated
+        }
+
+        private void CheckOut_ValueChanged(object sender, EventArgs e)
+        {
+            if (CheckOut.Value <= Checkin.Value)
+                CheckOut.Value = Checkin.Value.AddDays(1);
+
+            isRoomListCurrent = false; // Mark list outdated
         }
 
         private void View_Rooms(object sender, EventArgs e)
@@ -53,25 +60,33 @@ namespace Database_project
             dataGridRooms.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridRooms.MultiSelect = true;
             dataGridRooms.Refresh();
+
+            isRoomListCurrent = true; // Room list is now up to date
         }
 
         private void Pay_Click(object sender, EventArgs e)
         {
+            if (!isRoomListCurrent)
+            {
+                MessageBox.Show("Room availability is outdated. Please click 'View Rooms' again to refresh the list.");
+                return;
+            }
+
             if (dataGridRooms.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Please select a room first.");
                 return;
             }
 
-            int guestID = CguestID;
-            string startDate = Checkin.Value.ToString("yyyy-MM-dd");
-            string endDate = CheckOut.Value.ToString("yyyy-MM-dd");
-
             if (Checkin.Value < DateTime.Today || CheckOut.Value <= Checkin.Value)
             {
                 MessageBox.Show("Invalid date selection. Please choose a valid check-in and check-out date.");
                 return;
             }
+
+            int guestID = CguestID;
+            string startDate = Checkin.Value.ToString("yyyy-MM-dd");
+            string endDate = CheckOut.Value.ToString("yyyy-MM-dd");
 
             List<string> selectedRooms = new List<string>();
 
