@@ -124,7 +124,7 @@
             // 
             // CreateGuest
             // 
-            this.CreateGuest.BackColor = System.Drawing.Color.SeaGreen;
+            this.CreateGuest.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.CreateGuest.FlatAppearance.BorderSize = 2;
             this.CreateGuest.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.CreateGuest.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -248,7 +248,7 @@
             // 
             // back_btn
             // 
-            this.back_btn.BackColor = System.Drawing.Color.SeaGreen;
+            this.back_btn.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.back_btn.FlatAppearance.BorderSize = 2;
             this.back_btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.back_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -266,7 +266,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.ForestGreen;
+            this.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.ClientSize = new System.Drawing.Size(852, 442);
             this.Controls.Add(this.back_btn);
             this.Controls.Add(this.label11);

@@ -84,9 +84,12 @@
             // 
             // button1
             // 
+            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.button1.Location = new System.Drawing.Point(422, 222);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(75, 33);
             this.button1.TabIndex = 7;
             this.button1.Text = "Search";
             this.button1.UseVisualStyleBackColor = true;
@@ -105,6 +108,7 @@
             // Back
             // 
             this.Back.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.Back.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.Back.FlatAppearance.BorderColor = System.Drawing.Color.White;
             this.Back.FlatAppearance.BorderSize = 3;
             this.Back.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
@@ -113,9 +117,9 @@
             this.Back.Location = new System.Drawing.Point(12, 11);
             this.Back.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Back.Name = "Back";
-            this.Back.Size = new System.Drawing.Size(70, 37);
+            this.Back.Size = new System.Drawing.Size(91, 37);
             this.Back.TabIndex = 70;
-            this.Back.Text = "Back";
+            this.Back.Text = "<- Back";
             this.Back.UseVisualStyleBackColor = true;
             this.Back.Click += new System.EventHandler(this.Back_Click);
             // 

@@ -18,7 +18,8 @@ namespace Database_project
         String BranchID;
         string checkin;
         string checkout;
-        public EditReservationRooms(string reservationId, string bookingDate, string branchID, string checkin, string checkout)
+        ViewReservation vr;
+        public EditReservationRooms(string reservationId, string bookingDate, string branchID, string checkin, string checkout, ViewReservation vr)
         {
             InitializeComponent();
             this.reservationId = reservationId;
@@ -36,12 +37,12 @@ namespace Database_project
             DBHandler db = new DBHandler();
             dataGridView2.DataSource = db.ShowAvailableRooms(checkin, checkout, BranchID);
             dataGridView1.DataSource = db.getReservedRooms(reservationId);
+            this.vr = vr;
         }
 
         private void Back_Click(object sender, EventArgs e)
         {
-            ViewReservation viewReservation = new ViewReservation(reservationId);
-            viewReservation.Show();
+            vr.Show();
             this.Hide();
         }
 

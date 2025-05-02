@@ -53,12 +53,14 @@
             this.Back.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.Back.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Back.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.Back.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
             this.Back.Location = new System.Drawing.Point(12, 12);
             this.Back.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Back.Name = "Back";
-            this.Back.Size = new System.Drawing.Size(75, 32);
+            this.Back.Size = new System.Drawing.Size(82, 36);
             this.Back.TabIndex = 82;
-            this.Back.Text = "Back";
+            this.Back.Text = "<- Back";
+            this.Back.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.Back.UseVisualStyleBackColor = true;
             this.Back.Click += new System.EventHandler(this.Back_Click);
             // 
