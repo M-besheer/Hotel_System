@@ -15,6 +15,48 @@ The application connects to a local SQL Server database (via SQL Server Manageme
 
 ---
 
+## ✨ Features
+
+- ✅ Make a new reservation
+- ✅ Check existing reservations
+- ✅ View available hotel rooms
+- ✅ Manage hotel staff information
+- ✅ Simple and responsive GUI with C# windows forms
+
+---
+
+## 🚀 How to Run the Project
+
+### 🔧 Prerequisites
+
+- Install SQL Server Management Studio 20
+- Run app on Visual Studio (C# windows Forms)
+
+---
+### 📦 Running the database locally
+#### 1) Creating the Database
+- Run the SQL Server management studio 20 app
+- Connect to your database engine
+- Right click on 'Databases' in the object explorer --> new database
+- name the new database then press ok
+- click on the + icon in 'Databases'
+- single click on the new database you just created (just highlight it)
+- Then press new query on the top bar (or press CTRL + N)
+- copy paste the sql script named 'HotelDB.sql'
+- run the query
+#### 2) Connecting the Database
+- Open project in Visual Studio
+- you need to use a connection string to connect to the database each time you send a query request
+- to obtain that connection string you click View-->Server Explorer
+- Right Click on Data connections--> Add connection
+- enter your local server name under "Server Name"
+- enter your new database name under "connect to a database"
+- click on the checkbox that says "trust server Certificate" --> then click OK
+- under properties of connection you will find the connection string that connects the queries in code to the database
+- <img width="1036" alt="image" src="https://github.com/user-attachments/assets/1da2d12a-796a-492b-9a1d-0b74b2ed6413" />
+
+---
+
 ## 📸 GUI Preview
 
 ### 🟩 Home Page
@@ -55,24 +97,5 @@ The application connects to a local SQL Server database (via SQL Server Manageme
   <img src="https://github.com/user-attachments/assets/19f898ee-21ed-4421-9002-b5dce96faecb" width="300"/>
   <img src="https://github.com/user-attachments/assets/90b609d5-e57c-4456-b7b3-bc7828ef0d27" width="300"/>
 </p>
-
----
-
-## ✨ Features
-
-- ✅ Make a new reservation
-- ✅ Check existing reservations
-- ✅ View available hotel rooms
-- ✅ Manage hotel staff information
-- ✅ Simple and responsive GUI with Java Swing
-
----
-
-## 🚀 How to Run the Project
-
-### 🔧 Prerequisites
-
-- Install SQL Server Management Studio 20
-- Run app on Visual Studio (C# windows Forms)
 
 ---
